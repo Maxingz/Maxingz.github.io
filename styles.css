@@ -50,7 +50,7 @@
   display: flex;
   align-items: center;     
   gap: 2vw;               
-  padding: 3vw;
+  padding: 5vw;
 }
 
 .picturebox img {
@@ -154,6 +154,9 @@ ul li {border: none !important;}
   text-align: left;
 }
 .dropdown h1 {
+  text-align: left;
+}
+.dropdown h2 {
   text-align: left;
 }
   
