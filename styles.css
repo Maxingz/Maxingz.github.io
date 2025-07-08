@@ -1,0 +1,160 @@
+/*Title Card*/
+.title {
+    display:block;
+    width:100%;
+    text-align: center;
+    font-size:300%;
+    background-color:#a4ccee;
+    margin: 0;
+    padding: 2vw 0;
+}
+
+
+/*Big Box*/
+.row {
+  box-sizing: border-box;
+  display: flex;
+  position: sticky;
+  top: 0;
+  left: 0;
+  align-items: center;
+  z-index: 1000;     
+  background-color: #3682c4;
+  justify-content: space-between; 
+  height: 3.2vw; 
+  padding:3.5vw 2vw;
+  gap: 2.5vw;
+  width: 100%; 
+}
+/*Button Box*/
+.col-box {
+  flex: 1; 
+  display: flex;
+  padding: 0.7vw;
+  background-color: #3f95e1;
+  align-items: center;       
+  justify-content: center;   
+  border: 1vw solid #1c3245;
+  
+  transition: background-color 0.3s ease;
+  color: white;
+  text-decoration: none;
+  font-size:110%;
+}
+.col-box:hover {
+  background-color: #3071ab; 
+  transform: scale(1.05);
+}
+/*My picture*/
+.picturebox {
+  display: flex;
+  align-items: center;     
+  gap: 2vw;               
+  padding: 3vw;
+}
+
+.picturebox img {
+  width: 20vw;            
+  height: auto;
+  padding: 4vw 1vw;
+}
+.picturetext {
+  padding: 20px;
+}
+/*Prototype Image*/
+.protoimg {
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  gap: 10vw;
+
+}
+
+/*TextIcon*/
+.imgicon {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none; /* removes underline */
+  color: inherit;
+}
+.imgicon .clicktext{
+  margin-top: 0.5vw;
+  font-size: 1vw;
+}
+/*
+.protoimg img{
+  width: 300px;            
+  height: auto;
+  padding: 0px 0px;
+}
+*/
+.bodycontent{
+    padding:0 15vw;
+}
+
+
+/*General*/
+body * {
+    font-family: "Montserrat", sans-serif;
+}
+  
+html,
+body {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+h1,h2,h3,h4 {font-weight: bold;}
+h1 {font-size: 180%}
+ul li {border: none !important;}
+
+/*Contact Footer*/
+.footer{
+  box-sizing: border-box;
+  display:block;
+  width:100%;
+  background-color:#4194dc;
+  padding: 1vw;
+  border-top:0.3vw;
+  border-top-style: solid; 
+  border-top-color: black;
+
+  }
+.dropdown{
+  position: relative;
+  display:block;
+  width:100%;
+}
+.dropdownbutton{
+  background-color: #61b4fc;
+  color: black;
+  padding: 20px 20px;
+  font-size: 32px;
+  cursor: pointer;
+  border:3px;
+  border-style: solid;
+}
+.dropdownpar{
+    background-color: #84c3fa;
+    display:block;
+    box-sizing: border-box;
+    padding:10px 50px;
+    font-size:120%;
+    text-align:center;
+    border-bottom:3px solid;
+    border-left:3px solid;
+    border-right:3px solid;
+    
+}
+.dropdownpar img{
+    display:inline-block;
+    text-align:center;
+}
+.dropdown p {
+  text-align: left;
+}
+.dropdown h1 {
+  text-align: left;
+}
+  
+  

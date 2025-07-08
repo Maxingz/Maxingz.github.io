@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Max Guo Website</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    
+  </head>
+  <body style="background-color:#a4ccee";> 
+    <section>
+
+      
+      <section class="">
+        <h1 class="title">Max Guo Website</h1>
+        <!--BUTTON NAVIGATION-->
+        <div class="row">
+          <a href="index.html" class="col-box" style="border-width: 2px;font-size:110%;">ABOUT</a>
+          <a href="MaxResumeofficial.pdf" download class="col-box" style="border-width: 2px;font-size:110%;">RESUME</a>
+          <a href="projects.html" class="col-box" style="border-width: 4px;font-size:110%;" >PROJECTS</a>
+          <a href="interests.html" class="col-box" style="border-width: 2px;font-size:110%;" >OTHER INTERESTS</a>
+          <a href="contact.html"class="col-box" style="border-width: 2px;font-size:110%;">CONTACT</a>
+          <a href="simulation.html"class="col-box" style="border-width: 2px; font-size:110%;">SIMULATION</a>
+        </div>
+        
+        <div class="bodycontent">
+          <!--PROJECTS-->
+         
+          <div id="projects" >
+            <h1 style="font-size:200%;">PROJECTS</h1>
+            <p style="font-size:150%;"> 
+              Below are a list of projects summarized by my contributions and what I have learned. The projects
+              will be explained with greater depth and detail as compared to the resume. 
+            </p>
+            <br>
+          </div>
+          <!--DROPDOWN -->
+          <!--SelfBalancingRobot-->
+          <details class="dropdown">
+            <summary class="dropdownbutton">
+              Self-Balancing Inverted Pendulum Robot 
+            </summary>
+            <div class="dropdownpar">
+              <p>
+                The main goal of this project was to design and fabricate a robot capable of balancing 
+                itself and also maintaining balance while being driven by an operator over bluetooth. 
+                The main additional feature was decided to be an 
+                object launcher, as being able to launch and keep the robot stable would be an 
+                excellent display of the robot’s ability to maintain balance. The other features added to the 
+                robot were an autostop condition, a speaker that 
+                sounds at low battery, and an LCD that displays the angle, motor speed, and battery life. 
+              </p>
+              <br>
+              <img src="projects/blockdiagram.png" width="600vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>System Block Diagram</i></p>
+              <p>The robot uses two microcontrollers--an Arduino Nano 33 BLE Sense Rev2 for the main functionalities 
+                (driving, bluetooth control, angle sensing), and an ESP32 DEVKITM-1 for the additional functionalities 
+                (object launcher, LCD screen, battery life speakers, distance sensor).
+                The robot balances by continuously measuring the current angle using the Arduino’s built-in accelerometer 
+                and gyroscope. This angle data is inputted into a PID control loop, which calculates and outputs the 
+                speed and direction for the motors to drive.
+              </p>
+              <br>
+              <img src="projects/cadmodel.png" width="400vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>SolidWorks Model of Robot Base</i></p>
+              <p>
+                The decision was made to use two breadboards to improve wiring organization. The main one housing motor drivers along 
+                with Arduino Nano, and the other 
+                containing the ESP32 and additional sensors. The decision to mount the breadboard centrally 
+                on the secondary base plate was due to maintaining the robot’s symmetrical balance.
+                To optimize weight reduction, we designed the object launcher base and third structural plate as a single 
+                unified component. The complete object launcher print was mounted on top of the secondary base plate, separated 
+                by additional 3D-printed 45mm standoffs. Attached to the bottom of the object launcher base was the auxiliary 
+                breadboard, tasked with managing additional sensors. This placement was optimal for wired communication between 
+                the Arduino Nano and the ESP32 while preserving the robot’s center of mass. 
+
+              </p>
+              <br>
+              <img src="projects/catapult.png" width="400vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>Finalized Object Launcher Print</i></p>
+              <p>
+                The design of the object launcher progressed through three key prototypes, each iteration resolving major flaws 
+                revealed from previous versions. The initial skeletal prototype prioritized quick printability to gauge 3D printer
+                accuracy. From testing it was revealed that servo limitations resulted in a weak launch strength placing importance on
+                strategic placement of the motors. A second, full-featured version exposed structural issues, including weak supports and 
+                a thin arm cross-section which caused a degree of unwanted movement. The final design corrected all flaws whilst adding 
+                practical addons like mounts for the LCD and speaker, ultimately improving launch strength and durability. The resulting design 
+                was able to launch objects up to 3m away and reprime after launch.
+              </p>
+              <br>
+              <h1>RESULT</h1>
+              <p>
+                The self-balancing robot was able to be completed with all 
+                of the functionalities that were initially set. The major outcomes that have been 
+                accomplished were: self-balance, bluetooth communication, movement and turning, object launching 
+                capabilities, LCD data display, and autostop capabilities.
+              </p>
+              <br>
+            </div>
+          </details>
+          <br>
+          <br>
+          <br>
+          <!--MetalDetector-->
+          <details class="dropdown">
+            <summary class="dropdownbutton">
+              Remote Control Metal Detecting Robot 
+            </summary>
+            <div class="dropdownpar">
+              <p>
+                The objective of this project is to design, build, program, and test a remote controlled 
+                metal detector robot. The robot must be completely battery powered and controlled by a joystick 
+                on the remote controller. The overarching goal is to detect metal (Canadian coins).
+              </p>
+              <br>
+              <img src="projects/metaldetectorrobotremote.png" width="600vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>Remote System Block Diagram</i></p>
+              <br>
+              <img src="projects/metaldetectorrobotlayout.png" width="600vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>Robot System Block Diagram</i></p>
+              <p>
+                The robot's control system consists of several key components using the PIC32MX130 
+                as the central microcontroller. A PS2 joystick was used to determine direction and 
+                velocity, transmitting data to the microcontroller via the JDY-40 wireless module. 
+                The communication between the microcontroller to LCD display was through a 4-bit parallel 
+                setup. The JDY-40 handles two-way radio communication for transmitting control signals and 
+                metal detection feedback. 
+              </p>
+              <br>
+              <img src="projects/softwareblockdiagram.png" width="600vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>Software Block Diagram</i></p>
+              <p>
+                Notable sections of the code include how the microcontroller processes joystick input. 
+                The voltage deviations from the neutral position are sent as formatted strings over the 
+                radio using an integer-to-string converter. This data is converted to integers for motor 
+                movement via PWM signals, where vertical input controls power and horizontal input controls 
+                power distribution between the two wheels. Additionally, metal detection is achieved using a 
+                handmade inductor consisting of copper wires wrapped around the circumference of a wheel. The 
+                frequency of the inductor shifts in response to metals, which can be processed and converted to 
+                an integer string. Using Timers, we can select different speaker output tones and rates based on 
+                metal proximity. 
+              </p>
+              <br>
+              <img src="projects/metaldetector.jpg" width="600vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>The Robot In All Its Glory</i></p>
+              <h1>RESULT</h1>
+              <p>
+                Utilizing 2 different microcontrollers, the metal detector robot was able to be 
+                controlled by a radio signal remotely. Despite encountering challenges such as 
+                fine-tuning the detection sensitivity, debugging code, and ensuring seamless hardware 
+                integration, the final product was able to satisfy all requirements. 
+
+                
+              </p>
+
+            </div>
+          </details>
+          <br>
+          <br>
+          <br>
+          <!--Subbot-->
+          <details class="dropdown">
+            <summary class="dropdownbutton">
+              Submarine Bot 
+            </summary>
+            <div class="dropdownpar">
+              <p>
+                The Submarine Bot project was a challenge of building a remotely controllable water vehicle 
+                capable of moving both horizontally and vertically underwater. One of the main restrictions was 
+                that only household items could be used; no external components or purchases were allowed. This 
+                meant disassembling existing items and repurposing their parts to construct the submersible.
+              </p>
+
+
+            </div>
+          </details>
+          <br>
+          <br>
+          <br>
+          
+      </section>   
+      <br> 
+      <!--CONTACT-->
+          <div id="contact" class="footer" >
+            <div class="bodycontent">
+              <h2  style="border-width: 3px !important;"><u>MY CONTACT INFO</u></h2>
+              <p style="font-size: 120%">Email: maxguo3721@gmail.com</p>
+              <p style="font-size: 120%">Phone number: +1 672-999-1988</p>
+              <h2  style="border-width: 3px !important;"><u>COOP ADVISOR CONTACT INFO</u></h2>
+              <p style="font-size: 120%">Name: Lily Chen</p>
+              <p style="font-size: 120%">Email: lily.chen@ubc.ca</p>
+              <p style="font-size: 120%">Phone number: +1 604-822-3214</p>
+              <br>
+            </div>
+          </div>  
+    </section>
+  </body>
+</html>
