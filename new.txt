@@ -18,16 +18,16 @@
         <h1 class="title">Max Guo Website</h1>
         <!--BUTTON NAVIGATION-->
         <div class="row">
-          <a href="new.html" class="col-box" style="border-width: 4px;font-size:110%;">ABOUT</a>
+          <a href="index.html" class="col-box" style="border-width: 4px;font-size:110%;">ABOUT</a>
           <a href="MaxResumeofficial.pdf" download class="col-box" style="border-width: 2px;font-size:110%;">RESUME</a>
-          <a href="test.html" class="col-box" style="border-width: 2px;font-size:110%;" >PROJECTS</a>
-          <a href="test.html" class="col-box" style="border-width: 2px;font-size:110%;" >OTHER INTERESTS</a>
+          <a href="projects.html" class="col-box" style="border-width: 2px;font-size:110%;" >PROJECTS</a>
+          <a href="interests.html" class="col-box" style="border-width: 2px;font-size:110%;" >OTHER INTERESTS</a>
           <a href="contact.html"class="col-box" style="border-width: 2px;font-size:110%;">CONTACT</a>
-          <a href="test.html"class="col-box" style="border-width: 2px; font-size:110%;">SIMULATION</a>
+          <a href="simulation.html"class="col-box" style="border-width: 2px; font-size:110%;">SIMULATION</a>
         </div>
         <!--MY PICTURE-->
         <div class="picturebox">
-          <img src="image0.jpg">
+          <img src="selfportrait.jpg">
           <div class="picturecontent">
               <div id="home" class="picturetext">
                   <p style="font-style: italic; font-size:x-large;">"A bird sitting on a tree is never afraid of the branch breaking, because his trust is not on the branch but on it's own wings. Always believe in yourself."</p>
@@ -41,9 +41,9 @@
           <!--ABOUT ME-->
          
           <div id="about" >
-            <h2>ABOUT ME</h2>
-            <p> 
-              Hi, thankyou for taking the time to learn more about me! I'm currently a third year electrical engineer
+            <h1>ABOUT ME</h1>
+            <p style="font-size:125%"> 
+              Hi, thank you for taking the time to learn more about me! I'm currently a third year electrical engineer
               at UBC, my interests lie in interstellar space travel. I'm fascinated by the idea that sentient alien life
               might exist beyond the stars. From reading Three-Body Problem (novel), 
               I have come to realize that humanity will eventually travel beyond the Solar System, whether it be curiosity or 
@@ -53,7 +53,7 @@
               used in humanities fleet. 
             </p>
 
-            <p>
+            <p style="font-size:125%">
               Currently, I have experience across various areas of electrical engineering. Particularly, I have worked in lab environments
               using lab equipment such as multimeters, oscilloscopes, waveform generators, soldering irons, AC/DC voltage 
               supplies, and breadboards. Through student projects, I've developed skills in rapid prototyping to quickly produce a result if there are 
@@ -68,8 +68,8 @@
 
           <!--ABOUT THE WEBSITE-->
           <div id="websiteabout" >
-            <h2>ABOUT THE WEBSITE</h2>
-            <p> 
+            <h1>ABOUT THE WEBSITE</h1>
+            <p style="font-size:125%"> 
               This website was made with some important restrictions: no line of code was to be taken and copied from 
               any form of <b>AI</b>. While I was allowed to draw inspiration from the design of other websites, I could not copy or plagiarize 
               any code from templates or website source code. The goal of these restrictions were so I could demonstrate my 
@@ -100,25 +100,25 @@
             <div id="skills" >
 
             
-            <h2 >SKILLS</h2>
-              <p>
+            <h1 >SKILLS</h1>
+              <p style="font-size:125%">
               From my experiences I have gained wide range of important skills that I believe would be greatly
               useful in a professional working environment. 
               </p>
               <!--SKILLS-->
-              <h3>Technical Skills</h3>
+              <h2>Technical Skills</h2>
               <ul style="font-weight: 550">
-                <li><span style="font-weight: 800">Programming:</span> Python, Java, Assembly, C/C++, MATLAB, SystemVerilog, HTML, CSS </li>
-                <li><span style="font-weight: 800">Software:</span> Altium, OnShape, Linux, LTSpice, Excel, PowerPoint, SolidWorks, Quartus, Arduino</li>
-                <li><span style="font-weight: 800">Equipment:</span> Oscilloscope, Multimeter, Waveform Generator, AC/DC Voltage Supply, Load Box </li>
-                <li><span style="font-weight: 800">Firmware:</span> ESP32, STM32, I2C, SPI, UART, FreeRTOS </li>
+                <li style="font-size:125%;"><span style="font-weight: 800">Programming:</span> Python, Java, Assembly, C/C++, MATLAB, SystemVerilog, HTML, CSS </li>
+                <li style="font-size:125%;"><span style="font-weight: 800">Software:</span> Altium, OnShape, Linux, LTSpice, Excel, PowerPoint, SolidWorks, Quartus, Arduino</li>
+                <li style="font-size:125%;"><span style="font-weight: 800">Equipment:</span> Oscilloscope, Multimeter, Waveform Generator, AC/DC Voltage Supply, Load Box </li>
+                <li style="font-size:125%;"><span style="font-weight: 800">Firmware:</span> ESP32, STM32, I2C, SPI, UART, FreeRTOS </li>
               </ul>
               
-              <h3>Soft Skills</h3>
+              <h2>Soft Skills</h2>
               <ul style="font-weight: 550">
-                <li><span style="font-weight: 800">Team Collaboration:</span> Design Team, Student Project, Lab Work </li>
-                <li><span style="font-weight: 800">Documentation and Reporting:</span> Engineering Report, Lab Report, Project Documentation</li>
-                <li><span style="font-weight: 800">Presenting:</span> Progress Update, Stakeholder Engagement Plan </li>
+                <li style="font-size:125%;"><span style="font-weight: 800">Team Collaboration:</span> Design Team, Student Project, Lab Work </li>
+                <li style="font-size:125%;"><span style="font-weight: 800">Documentation and Reporting:</span> Engineering Report, Lab Report, Project Documentation</li>
+                <li style="font-size:125%;"><span style="font-weight: 800">Presenting:</span> Progress Update, Stakeholder Engagement Plan </li>
             </div>
           <br>
           
@@ -128,12 +128,12 @@
           <div id="contact" class="footer" >
             <div class="bodycontent">
               <h2  style="border-width: 3px !important;"><u>MY CONTACT INFO</u></h2>
-              <p style="font-size: 110%">Email: maxguo3721@gmail.com</p>
-              <p style="font-size: 110%">Phone number: +1 672-999-1988</p>
+              <p style="font-size: 120%">Email: maxguo3721@gmail.com</p>
+              <p style="font-size: 120%">Phone number: +1 672-999-1988</p>
               <h2  style="border-width: 3px !important;"><u>COOP ADVISOR CONTACT INFO</u></h2>
-              <p style="font-size: 110%">Name: Lily Chen</p>
-              <p style="font-size: 110%">Email: lily.chen@ubc.ca</p>
-              <p style="font-size: 110%">Phone number: +1 604-822-3214</p>
+              <p style="font-size: 120%">Name: Lily Chen</p>
+              <p style="font-size: 120%">Email: lily.chen@ubc.ca</p>
+              <p style="font-size: 120%">Phone number: +1 604-822-3214</p>
               <br>
             </div>
           </div>  

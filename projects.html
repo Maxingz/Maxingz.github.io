@@ -55,51 +55,47 @@
                 moving downward. I relied heavily on the use of &lt;div&gt and &lt;section&gt to segment my code for better interpretation. 
                 With the project being a personal one in mind, comments were limited but were used to separate and identify key sections of the website.
               </p>
-              <ROADBLOCK>
+              <h2>ROADBLOCK</h2>
               <br>
               <img src="projects/websiteview.png" width="800vw" height="auto">
               <p style="text-align:center; font-size:80%"><i>Intended Viewing Proportions</i></p>
-              <p>The robot uses two microcontrollers--an Arduino Nano 33 BLE Sense Rev2 for the main functionalities 
-                (driving, bluetooth control, angle sensing), and an ESP32 DEVKITM-1 for the additional functionalities 
-                (object launcher, LCD screen, battery life speakers, distance sensor).
-                The robot balances by continuously measuring the current angle using the Arduino’s built-in accelerometer 
-                and gyroscope. This angle data is inputted into a PID control loop, which calculates and outputs the 
-                speed and direction for the motors to drive.
+              <p>
+                I made a crucial beginner mistake while developing my website. I only viewed it on my laptop throughout the majority of the 
+                creation process. As a result, I failed to test my website under varying display resolutions and sizes. Upon realizing this 
+                oversight, I began testing the site under various conditions, including on a desktop, and discovered several layout inconsistencies.
               </p>
               <br>
-              <img src="projects/cadmodel.png" width="400vw" height="auto">
-              <p style="text-align:center; font-size:80%"><i>SolidWorks Model of Robot Base</i></p>
+              <img src="projects/websiteunfixed.png" width="800vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>Website Desktop Proportions</i></p>
               <p>
-                The decision was made to use two breadboards to improve wiring organization. The main one housing motor drivers along 
-                with Arduino Nano, and the other 
-                containing the ESP32 and additional sensors. The decision to mount the breadboard centrally 
-                on the secondary base plate was due to maintaining the robot’s symmetrical balance.
-                To optimize weight reduction, we designed the object launcher base and third structural plate as a single 
-                unified component. The complete object launcher print was mounted on top of the secondary base plate, separated 
-                by additional 3D-printed 45mm standoffs. Attached to the bottom of the object launcher base was the auxiliary 
-                breadboard, tasked with managing additional sensors. This placement was optimal for wired communication between 
-                the Arduino Nano and the ESP32 while preserving the robot’s center of mass. 
+                The majority of the website’s dimensions were initially set using fixed pixel (px) values. This meant that padding area, font sizes, 
+                and margins remained constant regardless of the viewing window size. As a result, when viewed on larger or differently sized screens, 
+                the website would not scale proportionally. The fix required a complete conversion of all pixel measurements to viewport width (vw), which would 
+                scale elements based on the width of the browser window. This was made easier by the many classes I created in my CSS file. Converting to vw allowed for a 
+                consistent 
+                ratio between the viewport and the website 
+                layout.  
 
               </p>
-              <br>
-              <img src="projects/catapult.png" width="400vw" height="auto">
-              <p style="text-align:center; font-size:80%"><i>Finalized Object Launcher Print</i></p>
               <p>
-                The design of the object launcher progressed through three key prototypes, each iteration resolving major flaws 
-                revealed from previous versions. The initial skeletal prototype prioritized quick printability to gauge 3D printer
-                accuracy. From testing it was revealed that servo limitations resulted in a weak launch strength placing importance on
-                strategic placement of the motors. A second, full-featured version exposed structural issues, including weak supports and 
-                a thin arm cross-section which caused a degree of unwanted movement. The final design corrected all flaws whilst adding 
-                practical addons like mounts for the LCD and speaker, ultimately improving launch strength and durability. The resulting design 
-                was able to launch objects up to 3m away and reprime after launch.
+                In addition to vw, I also explored other responsive units like vh (viewport height), em, and rem.
+              </p>
+              <h2>TIMELINE</h2>
+              <br>
+              <img src="projects/timeline.png" width="1050vw" height="auto">
+              <p style="text-align:center; font-size:80%"><i>Planned Project Timeline</i></p>
+              <p>
+                I mostly stayed aligned with the initial goals outlined during project planning. However, 
+                in some areas, certain tasks were not completed within the originally specified time, resulting in overlaps 
+                with other tasks. As an example, I came to realize that learning HTML and CSS alongside building the website 
+                would be a more practical and time-effective approach. Setting clear goals proved very helpful in pacing myself 
+                and preventing procrastination.
               </p>
               <br>
               <h2>RESULT</h2>
               <p>
-                The self-balancing robot was able to be completed with all 
-                of the functionalities that were initially set. The major outcomes that have been 
-                accomplished were: self-balance, bluetooth communication, movement and turning, object launching 
-                capabilities, LCD data display, and autostop capabilities.
+                My personal website will always be a work in progress. Outside of the placed timeline, the plan is to constantly improve and add onto the website. 
+                I'm overall satisfied with how the website turned out. Mobile compatibility is one of the key features I plan to implement in the future.
               </p>
               <br>
             </div>
