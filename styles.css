@@ -1,3 +1,24 @@
+/*Mobile Warning*/
+.mobilewarning {
+  display: none;
+  background-color: #509dcd;
+  color: #000;
+  padding: 1.6vw 1.6vw;
+  text-align: center;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+  height:1000vw;
+}
+@media screen and (max-width: 768px) {
+  .mobile-warning {
+    display: block;
+  }
+}
+
+
 /*Title Card*/
 .title {
     display:block;
