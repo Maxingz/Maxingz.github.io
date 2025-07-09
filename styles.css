@@ -14,7 +14,7 @@
   height:1000vw;
 }
 @media screen and (max-width: 768px) {
-  .mobile-warning {
+  .mobilewarning {
     display: block;
   }
 }
@@ -181,5 +181,7 @@ ul li {border: none !important;}
 .dropdown h2 {
   text-align: left;
 }
-  
+.dropdown li {
+  text-align: left;
+} 
   
