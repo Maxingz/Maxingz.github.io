@@ -184,6 +184,9 @@ ul li {border: none !important;}
 .dropdown h2 {
   text-align: left;
 }
+.dropdown h3 {
+  text-align: left;
+}
 .dropdown li {
   text-align: left;
 } 
