@@ -18,10 +18,10 @@
     display: block;
   }
   .row{
-    display: none;
+    display: none!important;
   }
   .col-box{
-    display: none;
+    display: none!important;
   }
 }
 
