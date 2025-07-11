@@ -31,7 +31,7 @@
     display:block;
     width:100%;
     text-align: center;
-    font-size:300%;
+    font-size:3vw;
     background-color:#a4ccee;
     margin: 0;
     padding: 2vw 0;
@@ -68,7 +68,7 @@
   transition: background-color 0.3s ease;
   color: white;
   text-decoration: none;
-  font-size:110%;
+  font-size: 1.1vw;
 }
 .col-box:hover {
   background-color: #3071ab; 
@@ -135,9 +135,10 @@ body {
 }
 p { 
    text-indent: 4ch;
+   font-size: 1.2vw;
 }
 h1,h2,h3,h4 {font-weight: bold;}
-h1 {font-size: 180%}
+h1 {font-size: 1.8vw}
 ul li {border: none !important;}
 
 /*Contact Footer*/
@@ -146,6 +147,7 @@ ul li {border: none !important;}
   display:block;
   width:100%;
   background-color:#4194dc;
+  font-size:1.2vw;
   padding: 1vw;
   border-top:0.3vw;
   border-top-style: solid; 
