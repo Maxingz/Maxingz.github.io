@@ -199,4 +199,47 @@ ul li {border: none !important;}
 .dropdown li {
   text-align: left;
 } 
-  
+.hobby{
+  display:grid;
+  background-color:#063156;
+  gap: 1.5vw;
+  padding: 1vw;
+  border-style:solid;
+  border-width:2px;
+  border-color:powderblue;
+  grid-template-columns: repeat(3,1fr);
+
+}
+.eachhobby{
+  background-color: #2a8ce1;
+  width:100%;
+  border-style:solid;
+  border-width:2px;
+  border-color:black;
+  text-align:center;
+
+
+}
+.eachhobby img{
+  width:100%;
+  height:auto;
+  border-style:dashed;
+  border-width:2px;
+  border-color:black;
+}
+.eachhobby:hover{
+  transform:scale(1.05);
+}
+.eachhobby h3{
+  text-align:center;
+}
+.eachhobby p{
+  text-align:left;
+  font-size:1.1vw;
+}
+.happybar{
+  display:flex;
+  width:95%;
+  margin-right:auto;
+  justify-content: space-between;
+}
