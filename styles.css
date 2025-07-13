@@ -221,10 +221,10 @@ ul li {border: none !important;}
 
 }
 .eachhobby img{
-  width:100%;
   height:auto;
-  border-style:dashed;
-  border-width:2px;
+  height:20vh;
+  border-style:solid;
+  border-width:3px;
   border-color:black;
 }
 .eachhobby:hover{
