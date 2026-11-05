@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#fffaf5" />
     <title>About — Max Guo</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="hero-pattern.js" defer></script>
     <script src="navigation.js" defer></script>
   </head>
   <body>
@@ -22,35 +23,40 @@
       </div>
     </header>
     <main aria-label="About page">
-      <section class="hero" aria-labelledby="hero-title">
-        <p class="eyebrow"><span class="status-dot"></span> PERSONAL WEBSITE</p>
-        <h1 id="hero-title">Max Guo<span class="accent">.</span></h1>
-        <p class="hero-copy">
-          Electrical engineering, ambitious ideas, and a curiosity about what
-          lies beyond our world.
-        </p>
-      </section>
+      <div class="about-transition-stage">
+        <div class="about-transition-frame">
+          <section class="hero" aria-labelledby="hero-title">
+            <canvas class="hero-pattern" aria-hidden="true"></canvas>
+            <p class="eyebrow"><span class="status-dot"></span> PERSONAL WEBSITE</p>
+            <h1 id="hero-title">Max Guo<span class="accent">.</span></h1>
+            <p class="hero-copy">
+              Electrical engineering, ambitious ideas, and a curiosity about what
+              lies beyond our world.
+            </p>
+          </section>
 
-      <section class="about-section" aria-labelledby="about-title">
-        <div class="section-heading">
-          <span class="section-index">01 / ABOUT ME</span>
-          <h2 id="about-title">Curiosity, with a purpose.</h2>
+          <section class="about-section transition-about" aria-labelledby="about-title">
+            <div class="section-heading">
+              <span class="section-index">01 / ABOUT ME</span>
+              <h2 id="about-title">Curiosity, with a purpose.</h2>
+            </div>
+            <div class="section-copy">
+              <p>
+                I study electrical engineering at UBC, where I explore how ideas
+                become systems you can build, test, and improve. I'm especially
+                drawn to space exploration and the possibility of humanity one day
+                traveling beyond our solar system.
+              </p>
+              <p>
+                Lab work and team projects have given me hands-on experience with
+                electronics, rapid prototyping, and solving problems as they arise.
+                I enjoy learning across disciplines and working with others to turn
+                ambitious concepts into practical steps.
+              </p>
+            </div>
+          </section>
         </div>
-        <div class="section-copy">
-          <p>
-            I study electrical engineering at UBC, where I explore how ideas
-            become systems you can build, test, and improve. I'm especially
-            drawn to space exploration and the possibility of humanity one day
-            traveling beyond our solar system.
-          </p>
-          <p>
-            Lab work and team projects have given me hands-on experience with
-            electronics, rapid prototyping, and solving problems as they arise.
-            I enjoy learning across disciplines and working with others to turn
-            ambitious concepts into practical steps.
-          </p>
-        </div>
-      </section>
+      </div>
 
       <section class="about-section" aria-labelledby="website-title">
         <div class="section-heading">
