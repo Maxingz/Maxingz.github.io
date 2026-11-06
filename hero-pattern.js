@@ -5,6 +5,8 @@ const context = canvas?.getContext("2d");
 if (hero && canvas && context) {
   const pointer = { x: -1000, y: -1000, active: false };
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const particles = [];
+  const influenceRadius = 560;
   const spacing = 62;
   const diagonalSlope = 0.55;
   const repeatingWaveCount = 4;
@@ -20,6 +22,42 @@ if (hero && canvas && context) {
   function variationFor(index, offset) {
     const value = Math.sin((index + 1) * 127.1 + offset * 311.7) * 43758.5453;
     return value - Math.floor(value);
+  }
+
+  function applyWarp(x, y, sourceX, sourceY) {
+    const dx = x - sourceX;
+    const dy = y - sourceY;
+    const distance = Math.hypot(dx, dy);
+    const influence = Math.max(0, 1 - distance / influenceRadius) ** 2;
+    const displacement = influence * 32;
+
+    return {
+      x: x + (distance ? (dx / distance) * displacement : 0),
+      y: y + (distance ? (dy / distance) * displacement : 0),
+    };
+  }
+
+  function distortWavePoint(x, y) {
+    let point = pointer.active ? applyWarp(x, y, pointer.x, pointer.y) : { x, y };
+
+    for (const particle of particles) {
+      point = applyWarp(point.x, point.y, particle.x, particle.y);
+    }
+
+    return point;
+  }
+
+  function drawParticles() {
+    for (const particle of particles) {
+      const opacity = Math.min(1, (particle.lifetime - particle.age) * 2);
+
+      context.globalAlpha = opacity;
+      context.beginPath();
+      context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+      context.fill();
+    }
+
+    context.globalAlpha = 1;
   }
 
   function resizeCanvas() {
@@ -40,8 +78,6 @@ if (hero && canvas && context) {
     context.strokeStyle = "rgba(255, 255, 255, 0.62)";
     context.lineWidth = 1.25;
 
-    const influenceRadius = 560;
-
     const firstWave = -diagonalSlope * width - spacing;
     const lastWave = height + spacing;
 
@@ -59,22 +95,17 @@ if (hero && canvas && context) {
           shiftedX * diagonalSlope +
           Math.sin(shiftedX * waveFrequency) * waveAmplitude +
           Math.sin(shiftedX * waveFrequency * 2 + detailPhase) * detailAmplitude;
-        const dx = x - pointer.x;
-        const dy = baseY - pointer.y;
-        const distance = Math.hypot(dx, dy);
-        const influence = pointer.active
-          ? Math.max(0, 1 - distance / influenceRadius) ** 2
-          : 0;
-        const displacement = influence * 32;
-        const pointX = x + (distance ? (dx / distance) * displacement : 0);
-        const pointY = baseY + (distance ? (dy / distance) * displacement : 0);
+        const point = distortWavePoint(x, baseY);
 
-        if (x === -12) context.moveTo(pointX, pointY);
-        else context.lineTo(pointX, pointY);
+        if (x === -12) context.moveTo(point.x, point.y);
+        else context.lineTo(point.x, point.y);
       }
 
       context.stroke();
     }
+
+    context.fillStyle = "rgba(255, 255, 255, 0.9)";
+    drawParticles();
   }
 
   function animate(timestamp) {
@@ -84,9 +115,19 @@ if (hero && canvas && context) {
       return;
     }
 
-    if (previousFrameTime) {
-      const elapsedSeconds = Math.min((timestamp - previousFrameTime) / 1000, 0.05);
-      waveOffset = (waveOffset + elapsedSeconds * 85) % horizontalPeriod;
+    const elapsedSeconds = previousFrameTime
+      ? Math.min((timestamp - previousFrameTime) / 1000, 0.05)
+      : 0;
+    waveOffset = (waveOffset + elapsedSeconds * 85) % horizontalPeriod;
+    for (let index = particles.length - 1; index >= 0; index -= 1) {
+      const particle = particles[index];
+      particle.age += elapsedSeconds;
+      particle.x += particle.velocityX * elapsedSeconds;
+      particle.y += particle.velocityY * elapsedSeconds;
+      particle.velocityY += 340 * elapsedSeconds;
+      if (particle.age >= particle.lifetime || particle.y - particle.radius > height) {
+        particles.splice(index, 1);
+      }
     }
 
     previousFrameTime = timestamp;
@@ -113,6 +154,36 @@ if (hero && canvas && context) {
   hero.addEventListener("pointerleave", () => {
     pointer.active = false;
     if (motionPreference.matches) drawPattern();
+  });
+
+  hero.addEventListener("pointerdown", (event) => {
+    if (
+      event.target.closest(".scroll-cue") ||
+      event.pointerType !== "mouse" ||
+      event.button !== 0 ||
+      motionPreference.matches
+    ) {
+      return;
+    }
+
+    const bounds = hero.getBoundingClientRect();
+    const originX = event.clientX - bounds.left;
+    const originY = event.clientY - bounds.top;
+    for (let index = 0; index < 5; index += 1) {
+      const angle = -Math.PI + (index / 4) * Math.PI;
+      const speed = 90 + variationFor(index, performance.now()) * 110;
+      particles.push({
+        x: originX,
+        y: originY,
+        velocityX: Math.cos(angle) * speed,
+        velocityY: Math.sin(angle) * speed - 35,
+        age: 0,
+        lifetime: 3.2,
+        radius: 2 + variationFor(index, performance.now() + 1) * 1.5,
+      });
+    }
+
+    drawPattern();
   });
 
   motionPreference.addEventListener("change", () => {

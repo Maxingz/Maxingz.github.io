@@ -22,37 +22,68 @@
         </nav>
       </div>
     </header>
+    <aside class="section-index-sidebar" id="section-index" aria-label="About page sections" aria-hidden="true" inert>
+      <nav class="section-index-nav" aria-label="Section index">
+        <a href="#about-title">01 <span>About Me</span></a>
+        <a href="#website-title">02 <span>About This Website</span></a>
+        <a href="#skills-title">03 <span>Skills</span></a>
+        <a href="#archive-title">04 <span>Archive</span></a>
+        <a href="#inspiration-title">05 <span>Sources of Inspiration</span></a>
+      </nav>
+      <button class="section-index-toggle" type="button" aria-controls="section-index" aria-expanded="true" aria-label="Collapse section index">
+        <span class="section-index-toggle-label" aria-hidden="true">INDEX</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m14 5-7 7 7 7" />
+        </svg>
+      </button>
+    </aside>
     <main aria-label="About page">
       <div class="about-transition-stage">
         <div class="about-transition-frame">
           <section class="hero" aria-labelledby="hero-title">
             <canvas class="hero-pattern" aria-hidden="true"></canvas>
-            <p class="eyebrow"><span class="status-dot"></span> PERSONAL WEBSITE</p>
-            <h1 id="hero-title">Max Guo<span class="accent">.</span></h1>
-            <p class="hero-copy">
-              Electrical engineering, ambitious ideas, and a curiosity about what
-              lies beyond our world.
-            </p>
+            <div class="hero-intro">
+              <h1 id="hero-title">Max Guo's</h1>
+              <p class="hero-copy">Personal Website</p>
+              <a class="scroll-cue" href="#about-title">
+                <span>Scroll down to continue</span>
+                <span class="scroll-cue-arrow-track" aria-hidden="true">
+                  <svg class="scroll-cue-arrow" viewBox="0 0 24 24">
+                    <path d="M12 0v17m-6-6 6 6 6-6" />
+                  </svg>
+                </span>
+              </a>
+            </div>
           </section>
 
           <section class="about-section transition-about" aria-labelledby="about-title">
-            <div class="section-heading">
-              <span class="section-index">01 / ABOUT ME</span>
-              <h2 id="about-title">Curiosity, with a purpose.</h2>
-            </div>
-            <div class="section-copy">
-              <p>
-                I study electrical engineering at UBC, where I explore how ideas
-                become systems you can build, test, and improve. I'm especially
-                drawn to space exploration and the possibility of humanity one day
-                traveling beyond our solar system.
-              </p>
-              <p>
-                Lab work and team projects have given me hands-on experience with
-                electronics, rapid prototyping, and solving problems as they arise.
-                I enjoy learning across disciplines and working with others to turn
-                ambitious concepts into practical steps.
-              </p>
+            <div class="about-content">
+              <img
+                class="graduation-photo"
+                src="archive/selfportrait.jpg"
+                alt="Max wearing his graduation gown and holding his diploma"
+                loading="lazy"
+              />
+              <div class="about-text">
+                <div class="section-heading">
+                  <span class="section-index">01</span>
+                  <h2 id="about-title">ABOUT ME</h2>
+                </div>
+                <div class="section-copy">
+                  <p>
+                    I study electrical engineering at UBC, where I explore how ideas
+                    become systems you can build, test, and improve. I'm especially
+                    drawn to space exploration and the possibility of humanity one day
+                    traveling beyond our solar system.
+                  </p>
+                  <p>
+                    Lab work and team projects have given me hands-on experience with
+                    electronics, rapid prototyping, and solving problems as they arise.
+                    I enjoy learning across disciplines and working with others to turn
+                    ambitious concepts into practical steps.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -60,8 +91,8 @@
 
       <section class="about-section" aria-labelledby="website-title">
         <div class="section-heading">
-          <span class="section-index">02 / ABOUT THIS WEBSITE</span>
-          <h2 id="website-title">A personal project, always evolving.</h2>
+          <span class="section-index">02</span>
+          <h2 id="website-title">This Website</h2>
         </div>
         <div class="section-copy">
           <p>
@@ -79,7 +110,7 @@
 
       <section class="about-section skills-section" aria-labelledby="skills-title">
         <div class="section-heading">
-          <span class="section-index">03 / SKILLS</span>
+          <span class="section-index">03</span>
           <h2 id="skills-title">Tools for turning ideas into reality.</h2>
         </div>
         <div class="skills-grid">
@@ -101,6 +132,53 @@
               <li>Presenting ideas and progress</li>
             </ul>
           </div>
+        </div>
+      </section>
+
+      <section class="about-section archive-section" aria-labelledby="archive-title">
+        <div class="section-heading">
+          <span class="section-index">04</span>
+          <h2 id="archive-title">Archive</h2>
+        </div>
+        <div class="section-copy">
+          <div class="archive-content">
+            <a class="archive-preview" href="archive/index.html" aria-label="Open the archived website">
+              <iframe
+                src="archive/index.html"
+                title="Preview of the archived website"
+                loading="lazy"
+                tabindex="-1"
+              ></iframe>
+            </a>
+            <p>
+              This is the link to my
+              <a href="archive/index.html">previous website</a> which was all human
+              written code. Feel free to check it out!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section" aria-labelledby="inspiration-title">
+        <div class="section-heading">
+          <span class="section-index">05</span>
+          <h2 id="inspiration-title">Sources of Inspiration</h2>
+        </div>
+        <div class="section-copy">
+          <ul class="inspiration-links">
+            <li>
+              <a
+                href="https://www.aliabadi.ca/component/sppagebuilder/page/20.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >https://www.aliabadi.ca/component/sppagebuilder/page/20.html</a>
+            </li>
+            <li>
+              <a href="https://www.apple.com/ca/iphone-17/" target="_blank" rel="noopener noreferrer">
+                https://www.apple.com/ca/iphone-17/
+              </a>
+            </li>
+          </ul>
         </div>
       </section>
     </main>
