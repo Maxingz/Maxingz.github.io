@@ -159,20 +159,6 @@ a {
   visibility: hidden;
 }
 
-.resume-page {
-  min-height: 100vh;
-  padding-top: 58px;
-}
-
-.resume-pdf {
-  display: block;
-  width: 100%;
-  height: calc(100vh - 58px);
-  min-height: 480px;
-  border: 0;
-  background: #fff;
-}
-
 .header-inner {
   display: grid;
   width: min(100% - 3rem, 1120px);
@@ -1008,6 +994,23 @@ main {
   min-height: 100vh;
 }
 
+.resume-page {
+  min-height: 0;
+}
+
+.resume-page .resume-pdf {
+  position: fixed;
+  z-index: 1;
+  top: 58px;
+  left: 0;
+  display: block;
+  width: 100vw;
+  height: calc(100vh - 58px);
+  height: calc(100dvh - 58px);
+  border: 0;
+  background: #fff;
+}
+
 @media (max-width: 760px) {
   .header-inner {
     width: min(100% - 2rem, 1120px);
@@ -1021,12 +1024,10 @@ main {
     min-height: 54px;
   }
 
-  .resume-page {
-    padding-top: 108px;
-  }
-
-  .resume-pdf {
-    height: calc(100svh - 108px);
+  .resume-page .resume-pdf {
+    top: 108px;
+    height: calc(100vh - 108px);
+    height: calc(100dvh - 108px);
   }
 
   .site-nav {
