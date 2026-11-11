@@ -8,11 +8,152 @@ const desktopNotice = document.querySelector(".desktop-notice");
 const sectionIndex = document.querySelector(".section-index-sidebar");
 const sectionIndexToggle = document.querySelector(".section-index-toggle");
 const sectionIndexLinks = document.querySelectorAll(".section-index-nav a");
+const archiveSectionLink = document.querySelector(".archive-section-link");
 const archivePreview = document.querySelector(".archive-preview");
+const aiAssistanceTrigger = document.querySelector(".ai-assistance-trigger");
+const aiAssistancePopover = document.querySelector(".ai-assistance-popover");
+const aiAssistanceNote = document.querySelector(".ai-assistance-note");
+const aiAssistanceClose = document.querySelector(".ai-assistance-close");
+const aboutPortrait = document.querySelector(".about-portrait");
+const aboutEyesOverlay = document.querySelector(".about-eyes-overlay");
+// Roll once per page load; keep the original photo for the other 90%.
+const aboutEyeTrackingEnabled = Boolean(aboutPortrait) && Math.random() < 1 / 10;
+if (aboutEyeTrackingEnabled) {
+  aboutPortrait.querySelector(".about-portrait-front")?.setAttribute("mask", "url(#portrait-face-mask)");
+}
 const reducedMotionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 let scrollUpdateScheduled = false;
 let previousScrollY = window.scrollY;
 let sectionIndexWasVisible = false;
+let aiAssistancePinned = false;
+let aiAssistanceDismissedOnScroll = false;
+const finePointerPreference = window.matchMedia("(hover: hover) and (pointer: fine)");
+let eyeAnimationFrame = null;
+let eyePointer = null;
+
+for (const entry of document.querySelectorAll(".work-experience-entry")) {
+  const toggle = entry.querySelector(".work-experience-header");
+  const panel = entry.querySelector(".work-experience-details-inner");
+  if (!toggle || !panel) continue;
+
+  toggle.addEventListener("click", () => {
+    const expanded = toggle.getAttribute("aria-expanded") !== "true";
+    toggle.setAttribute("aria-expanded", String(expanded));
+    panel.setAttribute("aria-hidden", String(!expanded));
+    panel.inert = !expanded;
+    entry.classList.toggle("is-expanded", expanded);
+  });
+}
+
+function updateAboutEyePosition() {
+  eyeAnimationFrame = null;
+  if (!eyePointer || !aboutPortrait || !aboutEyesOverlay) return;
+
+  const portraitSvg = aboutPortrait.querySelector("svg.graduation-photo");
+  const screenTransform = portraitSvg?.getScreenCTM();
+  if (!screenTransform) return;
+  // Convert the cursor to the same coordinates as the iris centers. This accounts
+  // for SVG scaling, letterboxing, and the portrait's animated page position.
+  const cursor = new DOMPoint(eyePointer.x, eyePointer.y).matrixTransform(screenTransform.inverse());
+  const dx = cursor.x - (278.9 + 324.1) / 2;
+  const dy = cursor.y - (289.8 + 290) / 2;
+  const distance = Math.hypot(dx, dy, 210);
+  aboutEyesOverlay.style.setProperty("--eye-x", `${2.5 * dx / distance}px`);
+  aboutEyesOverlay.style.setProperty("--eye-y", `${2 * dy / distance}px`);
+}
+
+function scheduleAboutEyePosition() {
+  if (eyePointer && eyeAnimationFrame === null) {
+    eyeAnimationFrame = requestAnimationFrame(updateAboutEyePosition);
+  }
+}
+
+function resetAboutEyePosition() {
+  eyePointer = null;
+  if (eyeAnimationFrame !== null) cancelAnimationFrame(eyeAnimationFrame);
+  eyeAnimationFrame = null;
+  aboutEyesOverlay?.style.setProperty("--eye-x", "0px");
+  aboutEyesOverlay?.style.setProperty("--eye-y", "0px");
+}
+
+document.addEventListener("pointermove", (event) => {
+  if (
+    !aboutEyeTrackingEnabled ||
+    !aboutPortrait ||
+    !aboutEyesOverlay ||
+    event.pointerType !== "mouse" ||
+    reducedMotionPreference.matches ||
+    !finePointerPreference.matches
+  ) {
+    return;
+  }
+
+  eyePointer = { x: event.clientX, y: event.clientY };
+  scheduleAboutEyePosition();
+});
+window.addEventListener("scroll", scheduleAboutEyePosition, { passive: true });
+window.addEventListener("resize", scheduleAboutEyePosition);
+finePointerPreference.addEventListener("change", resetAboutEyePosition);
+document.documentElement.addEventListener("pointerleave", resetAboutEyePosition);
+window.addEventListener("blur", resetAboutEyePosition);
+reducedMotionPreference.addEventListener("change", () => {
+  if (reducedMotionPreference.matches) resetAboutEyePosition();
+});
+
+function setAiAssistanceVisible(visible) {
+  if (!aiAssistanceTrigger || !aiAssistancePopover) return;
+  aiAssistancePopover.hidden = !visible;
+  aiAssistanceTrigger.setAttribute("aria-expanded", String(visible));
+  if (visible) positionAiAssistancePopover();
+}
+
+function positionAiAssistancePopover() {
+  if (!aiAssistanceTrigger || !aiAssistancePopover) return;
+
+  const triggerBounds = aiAssistanceTrigger.getBoundingClientRect();
+  aiAssistancePopover.hidden = false;
+  const popoverBounds = aiAssistancePopover.getBoundingClientRect();
+  const edgeGap = 12;
+  const arrowSize = 8;
+  const availableBelow = window.innerHeight - triggerBounds.bottom;
+  const availableAbove = triggerBounds.top;
+  const placement =
+    availableBelow >= popoverBounds.height + arrowSize ||
+    availableBelow >= availableAbove
+      ? "below"
+      : "above";
+  const desiredTop =
+    placement === "below"
+      ? triggerBounds.bottom
+      : triggerBounds.top - popoverBounds.height;
+  const top = Math.min(
+    Math.max(edgeGap, desiredTop),
+    window.innerHeight - popoverBounds.height - edgeGap
+  );
+  const left = Math.min(
+    Math.max(edgeGap, triggerBounds.left),
+    window.innerWidth - popoverBounds.width - edgeGap
+  );
+  const arrowLeft = Math.min(
+    Math.max(8, triggerBounds.left + triggerBounds.width / 2 - left - arrowSize),
+    popoverBounds.width - arrowSize * 2 - 8
+  );
+
+  aiAssistancePopover.dataset.placement = placement;
+  aiAssistancePopover.style.left = `${left}px`;
+  aiAssistancePopover.style.top = `${top}px`;
+  aiAssistancePopover.style.setProperty("--popover-arrow-left", `${arrowLeft}px`);
+}
+
+function dismissAiAssistanceOnPointerLeave() {
+  window.setTimeout(() => {
+    const pointerOverNote = aiAssistanceNote?.matches(":hover") ?? false;
+    const pointerOverPopover = aiAssistancePopover?.matches(":hover") ?? false;
+    if (!aiAssistancePinned && !pointerOverNote && !pointerOverPopover) {
+      setAiAssistanceVisible(false);
+    }
+  });
+}
 
 desktopNotice?.addEventListener("click", () => {
   if (reducedMotionPreference.matches) {
@@ -22,6 +163,97 @@ desktopNotice?.addEventListener("click", () => {
 
   desktopNotice.classList.add("is-dismissing");
   desktopNotice.addEventListener("animationend", () => desktopNotice.remove(), { once: true });
+});
+
+const labEquipmentTrigger = document.querySelector(".lab-equipment-trigger");
+const labEquipmentPopover = document.querySelector(".lab-equipment-popover");
+
+function positionLabEquipmentPopover(clientX, clientY) {
+  if (!labEquipmentTrigger || !labEquipmentPopover) return;
+
+  labEquipmentPopover.hidden = false;
+  const bounds = labEquipmentPopover.getBoundingClientRect();
+  const gap = 12;
+  const left = Math.min(
+    Math.max(gap, clientX + gap + bounds.width <= window.innerWidth - gap
+      ? clientX + gap
+      : clientX - bounds.width - gap),
+    window.innerWidth - bounds.width - gap
+  );
+  const top = Math.min(
+    Math.max(gap, clientY + gap + bounds.height <= window.innerHeight - gap
+      ? clientY + gap
+      : clientY - bounds.height - gap),
+    window.innerHeight - bounds.height - gap
+  );
+
+  labEquipmentPopover.style.left = `${left}px`;
+  labEquipmentPopover.style.top = `${top}px`;
+}
+
+labEquipmentTrigger?.addEventListener("pointerenter", (event) => {
+  positionLabEquipmentPopover(event.clientX, event.clientY);
+});
+labEquipmentTrigger?.addEventListener("pointermove", (event) => {
+  positionLabEquipmentPopover(event.clientX, event.clientY);
+});
+labEquipmentTrigger?.addEventListener("pointerleave", () => {
+  if (labEquipmentPopover) labEquipmentPopover.hidden = true;
+});
+
+aiAssistanceNote?.addEventListener("pointerenter", () => {
+  if (!aiAssistanceDismissedOnScroll) setAiAssistanceVisible(true);
+});
+aiAssistanceNote?.addEventListener("pointermove", () => {
+  aiAssistanceDismissedOnScroll = false;
+  setAiAssistanceVisible(true);
+});
+aiAssistanceNote?.addEventListener("pointerleave", dismissAiAssistanceOnPointerLeave);
+aiAssistancePopover?.addEventListener("pointerleave", dismissAiAssistanceOnPointerLeave);
+aiAssistanceTrigger?.addEventListener("click", () => {
+  aiAssistancePinned = !aiAssistancePinned;
+  setAiAssistanceVisible(true);
+});
+aiAssistanceClose?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  aiAssistancePinned = false;
+  setAiAssistanceVisible(false);
+});
+
+document.addEventListener("click", (event) => {
+  if (
+    aiAssistanceTrigger &&
+    aiAssistancePopover &&
+    !aiAssistanceNote?.contains(event.target)
+  ) {
+    aiAssistancePinned = false;
+    setAiAssistanceVisible(false);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && aiAssistanceTrigger && aiAssistancePopover) {
+    aiAssistancePinned = false;
+    setAiAssistanceVisible(false);
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (aiAssistanceTrigger?.getAttribute("aria-expanded") === "true") {
+    positionAiAssistancePopover();
+  }
+});
+function dismissAiAssistanceOnScroll() {
+  if (aiAssistanceTrigger?.getAttribute("aria-expanded") === "true") {
+    aiAssistanceDismissedOnScroll = true;
+    aiAssistancePinned = false;
+    setAiAssistanceVisible(false);
+  }
+}
+window.addEventListener("scroll", dismissAiAssistanceOnScroll, { passive: true });
+document.addEventListener("scroll", dismissAiAssistanceOnScroll, {
+  capture: true,
+  passive: true,
 });
 
 archivePreview?.addEventListener("click", (event) => {
@@ -137,6 +369,7 @@ function updateAboutCrossfade() {
   if (reducedMotionPreference.matches) {
     aboutHero.style.opacity = "1";
     aboutSection.style.opacity = "1";
+    aboutSection.style.pointerEvents = "auto";
     return;
   }
 
@@ -145,6 +378,7 @@ function updateAboutCrossfade() {
   const progress = Math.min(Math.max(-stageTop / transitionDistance, 0), 1);
   aboutHero.style.opacity = String(1 - progress);
   aboutSection.style.opacity = String(progress);
+  aboutSection.style.pointerEvents = progress > 0.5 ? "auto" : "none";
 }
 
 function updateHeaderOnScroll() {
@@ -237,6 +471,11 @@ sectionIndex?.addEventListener("focusout", (event) => {
   }
 });
 sectionIndexToggle?.addEventListener("click", () => setSectionIndexCollapsed(true));
+
+archiveSectionLink?.addEventListener("click", (event) => {
+  event.preventDefault();
+  scrollToSection("archive-title");
+});
 
 for (const link of sectionIndexLinks) {
   link.addEventListener("click", (event) => {

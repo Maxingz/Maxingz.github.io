@@ -27,8 +27,9 @@
         <a href="#about-title">01 <span>About Me</span></a>
         <a href="#website-title">02 <span>About This Website</span></a>
         <a href="#skills-title">03 <span>Skills</span></a>
-        <a href="#archive-title">04 <span>Archive</span></a>
-        <a href="#inspiration-title">05 <span>Sources of Inspiration</span></a>
+        <a href="#work-experience-title">04 <span>Work Experience (Expanded)</span></a>
+        <a href="#archive-title">05 <span>Archive</span></a>
+        <a href="#inspiration-title">06 <span>Sources of Inspiration</span></a>
       </nav>
       <button class="section-index-toggle" type="button" aria-controls="section-index" aria-expanded="true" aria-label="Collapse section index">
         <span class="section-index-toggle-label" aria-hidden="true">INDEX</span>
@@ -64,12 +65,50 @@
 
           <section class="about-section transition-about" aria-labelledby="about-title">
             <div class="about-content">
-              <img
-                class="graduation-photo"
-                src="archive/selfportrait.jpg"
-                alt="Max wearing his graduation gown and holding his diploma"
-                loading="lazy"
-              />
+              <div class="about-portrait">
+                <svg class="graduation-photo" viewBox="0 0 600 900" role="img" aria-labelledby="portrait-title">
+                  <title id="portrait-title">Max wearing his graduation gown and holding his diploma</title>
+                  <defs>
+                    <!-- Trace the inner eyelid edges in the original photo's coordinates. -->
+                    <path id="portrait-eye-openings" d="M267.5 290 Q272 286.2 277.7 286.2 Q284.4 286 288.4 290.7 Q283.7 295.2 278.2 295.1 Q272.6 294.8 267.5 290 Z M315.8 290.1 Q319.6 286.4 324.2 286.7 Q329.8 286.8 333.3 290.7 Q329.6 294.9 324.5 294.7 Q319.5 294.6 315.8 290.1 Z" />
+                    <mask id="portrait-face-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="900" style="mask-type: luminance">
+                      <rect width="600" height="900" fill="white" />
+                      <use href="#portrait-eye-openings" fill="black" />
+                    </mask>
+                    <clipPath id="portrait-iris-crops">
+                      <ellipse cx="278.9" cy="289.8" rx="4.15" ry="4.65" />
+                      <ellipse cx="324.1" cy="290" rx="3.8" ry="4.5" />
+                    </clipPath>
+                    <clipPath id="portrait-eye-clip">
+                      <use href="#portrait-eye-openings" />
+                    </clipPath>
+                    <!-- Warm, subdued sclera with shading from the surrounding lids. -->
+                    <linearGradient id="portrait-eye-white" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0" stop-color="#9f8175" />
+                      <stop offset="0.35" stop-color="#c5afa2" />
+                      <stop offset="0.65" stop-color="#d8c6b7" />
+                      <stop offset="1" stop-color="#bda092" />
+                    </linearGradient>
+                    <linearGradient id="portrait-lid-shadow" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0" stop-color="#50392f" stop-opacity="0.3" />
+                      <stop offset="0.45" stop-color="#50392f" stop-opacity="0" />
+                      <stop offset="0.8" stop-color="#50392f" stop-opacity="0" />
+                      <stop offset="1" stop-color="#795347" stop-opacity="0.12" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Stationary eye whites, then only the moving iris/pupil pixels. -->
+                  <use href="#portrait-eye-openings" fill="url(#portrait-eye-white)" />
+                  <g clip-path="url(#portrait-eye-clip)" aria-hidden="true">
+                    <g class="about-eyes-overlay">
+                      <image href="archive/selfportrait.jpg" width="600" height="900" clip-path="url(#portrait-iris-crops)" />
+                    </g>
+                  </g>
+                  <!-- Keep the lid shadow fixed across both the sclera and moving irises. -->
+                  <use href="#portrait-eye-openings" fill="url(#portrait-lid-shadow)" aria-hidden="true" />
+                  <!-- Show the original photo unless this page load enables eye tracking. -->
+                  <image class="about-portrait-front" href="archive/selfportrait.jpg" width="600" height="900" />
+                </svg>
+              </div>
               <div class="about-text">
                 <div class="section-heading">
                   <span class="section-index">01</span>
@@ -77,16 +116,24 @@
                 </div>
                 <div class="section-copy">
                   <p>
-                    I study electrical engineering at UBC, where I explore how ideas
-                    become systems you can build, test, and improve. I'm especially
-                    drawn to space exploration and the possibility of humanity one day
-                    traveling beyond our solar system.
+                    I am currently an electrical engineering student at UBC. I'd like 
+                    to see humanity one day conquer the solar system or, better yet, the galaxy. 
+                    I'd like to contribute to that effort. 
                   </p>
                   <p>
-                    Lab work and team projects have given me hands-on experience with
-                    electronics, rapid prototyping, and solving problems as they arise.
-                    I enjoy learning across disciplines and working with others to turn
-                    ambitious concepts into practical steps.
+                    I have a diverse skill set developed through laboratory work with various types
+                    of <span
+                      class="lab-equipment-trigger"
+                      aria-describedby="lab-equipment-details"
+                    >equipment,</span><span
+                      class="lab-equipment-popover"
+                      id="lab-equipment-details"
+                      role="tooltip"
+                      hidden
+                    >Multimeters, oscilloscopes, waveform generators, soldering irons,
+                    AC/DC voltage supplies, and breadboards.</span> design team projects requiring rapid prototyping and on-the-spot
+                    problem-solving, and my recent automation engineering internship. I enjoy learning 
+                    across disciplines and working with others to turn ambitious concepts into reality.
                   </p>
                 </div>
               </div>
@@ -98,18 +145,45 @@
       <section class="about-section" aria-labelledby="website-title">
         <div class="section-heading">
           <span class="section-index">02</span>
-          <h2 id="website-title">This Website</h2>
+          <h2 id="website-title">WEBSITE</h2>
         </div>
         <div class="section-copy">
           <p>
-            This website is a space to share what I build, what I'm learning,
-            and the ideas I'm exploring. I'm starting fresh with a simple
-            foundation, then I'll shape it over time as new projects and
+            This website is a space to share what I build and for people 
+            to know me better. 
+            I started with a blank slate, no template. I really wanted to 
+            express my creativity through my personal website. Contrary to
+            the previous version, this one is built with
+            <span class="ai-assistance-note">
+              <button
+                class="ai-assistance-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="ai-assistance-details"
+              >ai assistance*</button>
+              <span class="ai-assistance-popover" id="ai-assistance-details" hidden>
+                <button class="ai-assistance-close" type="button" aria-label="Close details">×</button>
+                <span>
+                  My stance on AI use has since flipped from my initial views in
+                  2024-2025. I had viewed all AI use as a form of insincerity,
+                  hence why my first website was all hand-written code. This view
+                  was mostly influenced by the flood of AI art on social media
+                  which lacked creativity and felt incredibly exploitative. But I
+                  have come to recognize the many benefits. In the creation of
+                  this website, all ideas were original. I used AI not as an idea
+                  generator, but as a tool to translate my thoughts into code.
+                </span>
+              </span>
+            </span>.
+            I plan to shape it over time as new projects and
             interests take form.
           </p>
           <p>
-            The earlier version is preserved separately. This new site keeps
-            the focus on a clean, flexible home for the next chapter.
+            The <a class="archive-section-link" href="#archive-title">earlier version</a>
+            is preserved separately. I designed this site to
+            retain a more modern and sleek design. Orange was (maybe still is) my 
+            favorite color so I made it an ongoing theme throughout the site. I 
+            also made the site a lot more interactive to hold the viewers' attention.
           </p>
         </div>
       </section>
@@ -117,34 +191,170 @@
       <section class="about-section skills-section" aria-labelledby="skills-title">
         <div class="section-heading">
           <span class="section-index">03</span>
-          <h2 id="skills-title">Tools for turning ideas into reality.</h2>
+          <h2 id="skills-title">SKILLS</h2>
         </div>
         <div class="skills-grid">
           <div class="skill-group">
-            <h3>Technical</h3>
+            <h3>Technical Skills</h3>
             <ul>
-              <li><span>Programming</span> Python, C/C++, Java, MATLAB, SystemVerilog</li>
-              <li><span>Hardware</span> ESP32, STM32, I2C, SPI, UART, FreeRTOS</li>
-              <li><span>Design tools</span> Altium, LTSpice, SolidWorks, OnShape</li>
+              <li><span>Programming</span> Python, C/C++, Java, MATLAB, SystemVerilog, HTML, CSS, Ladder Logic</li>
+              <li><span>Software</span> Altium, OnShape, AutoCAD, Linux, LTSpice, Excel, Visio, PowerPoint, SolidWorks, Quartus, Arduino, BlueBeam</li>
+              <li><span>Firmware</span> ESP32, STM32, I2C, SPI, UART, FreeRTOS</li>
+              <li><span>Lab Equipment</span> Oscilloscope, Multimeter, Waveform Generator, AC/DC Voltage Supply, Load Box</li>
               <li><span>Lab equipment</span> Oscilloscopes, multimeters, waveform generators</li>
             </ul>
           </div>
           <div class="skill-group">
-            <h3>How I work</h3>
+            <h3>Soft Skills</h3>
             <ul>
-              <li>Team collaboration</li>
-              <li>Rapid prototyping</li>
-              <li>Technical documentation</li>
-              <li>Presenting ideas and progress</li>
+              <li><span>Communication</span> Technical Communication, Vendor Communication, Professional Etiquette, Catering Attendance, Team Meeting Participation, 1 on 1s</li>
+              <li><span>Collaboration</span> Cross-Team Collab, Project Setup, Giving and Receiving Feedback</li>
+              <li><span>Problem-Solving</span> Analytical Thinking, Critical Thinking, Troubleshooting, Process Improvement, Independent Learning, Adaptability</li>
+              <li><span>Organization</span> Task Time Estimation, Meeting Booking, Task Prioritization, Follow-through</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <section class="about-section archive-section" aria-labelledby="archive-title">
+      <section class="about-section work-experience-section" aria-labelledby="work-experience-title">
         <div class="section-heading">
           <span class="section-index">04</span>
-          <h2 id="archive-title">Archive</h2>
+          <h2 id="work-experience-title">WORK EXPERIENCE (EXPANDED)</h2>
+        </div>
+        <div class="work-experience-list">
+          <article class="work-experience-entry">
+            <button class="work-experience-header" type="button" aria-expanded="false" aria-controls="work-experience-mangrove">
+              <svg class="work-experience-arrow" viewBox="0 0 12 16" aria-hidden="true">
+                <path d="M1 1 11 8 1 15" />
+              </svg>
+              <span class="work-experience-role">
+                <span class="work-experience-title">Automation Engineering Intern</span>
+                <span class="work-experience-employer">Mangrove Lithium</span>
+              </span>
+              <span class="work-experience-meta">
+                <time datetime="2025-09">September 2025</time> –
+                <time datetime="2026-06">June 2026</time>
+                <span>Delta, BC</span>
+              </span>
+            </button>
+            <div class="work-experience-details">
+              <div class="work-experience-details-inner" id="work-experience-mangrove" aria-hidden="true" inert>
+                <ul>
+                  <li>
+                    Created and updated electrical, network, and cable schematics,
+                    I/O lists, and panel documentation using AutoCAD, Visio, and Bluebeam.
+                  </li>
+                  <li>
+                    Programmed, tested, and debugged PLC logic, pump controls, SCADA
+                    features, and equipment interlocks.
+                  </li>
+                  <li>
+                    Coordinated with mechanical, process, and procurement teams on
+                    equipment modifications, vendor requests, and technical documentation.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+          <article class="work-experience-entry">
+            <button class="work-experience-header" type="button" aria-expanded="false" aria-controls="work-experience-robotics">
+              <svg class="work-experience-arrow" viewBox="0 0 12 16" aria-hidden="true">
+                <path d="M1 1 11 8 1 15" />
+              </svg>
+              <span class="work-experience-role">
+                <span class="work-experience-title">Firmware Engineer Team Member</span>
+                <span class="work-experience-employer">UBC Open Robotics</span>
+              </span>
+              <span class="work-experience-meta">
+                <time datetime="2025-01">Jan 2025</time> – Present
+                <span>Vancouver, BC</span>
+              </span>
+            </button>
+            <div class="work-experience-details">
+              <div class="work-experience-details-inner" id="work-experience-robotics" aria-hidden="true" inert>
+                <ul>
+                  <li>
+                    Utilized ROS 2 to configure a GitHub repository in Linux for sensor
+                    driver implementation, enabling seamless integration and version control.
+                  </li>
+                  <li>
+                    Simulated firmware in Gmock to benchmark multiple IMUs and determine
+                    which best fits the hardware specifications.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+          <article class="work-experience-entry">
+            <button class="work-experience-header" type="button" aria-expanded="false" aria-controls="work-experience-models">
+              <svg class="work-experience-arrow" viewBox="0 0 12 16" aria-hidden="true">
+                <path d="M1 1 11 8 1 15" />
+              </svg>
+              <span class="work-experience-role">
+                <span class="work-experience-title">3D Model Designer</span>
+                <span class="work-experience-employer">Open Gate Architectural Scale Models</span>
+              </span>
+              <span class="work-experience-meta">
+                <time datetime="2023-06">June 2023</time> –
+                <time datetime="2023-09">September 2023</time>
+                <span>Vancouver, BC</span>
+              </span>
+            </button>
+            <div class="work-experience-details">
+              <div class="work-experience-details-inner" id="work-experience-models" aria-hidden="true" inert>
+                <ul>
+                  <li>
+                    Designed industry-level 3D miniature models using SketchUp and AutoCAD,
+                    adhering to project requirements and design specifications.
+                  </li>
+                  <li>
+                    Troubleshot and resolved modelling issues to ensure successful 3D printing.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+          <article class="work-experience-entry">
+            <button class="work-experience-header" type="button" aria-expanded="false" aria-controls="work-experience-caesars">
+              <svg class="work-experience-arrow" viewBox="0 0 12 16" aria-hidden="true">
+                <path d="M1 1 11 8 1 15" />
+              </svg>
+              <span class="work-experience-role">
+                <span class="work-experience-title">Chef, Cashier, Janitor</span>
+                <span class="work-experience-employer">Little Caesars</span>
+              </span>
+              <span class="work-experience-meta">
+                <time datetime="2021-05">May 2021</time> –
+                <time datetime="2022-08">August 2022</time>
+                <span>Burnaby, BC</span>
+              </span>
+            </button>
+            <div class="work-experience-details">
+              <div class="work-experience-details-inner" id="work-experience-caesars" aria-hidden="true" inert>
+                <ul>
+                  <li>
+                    Expertly prepared and assembled a wide range of pizza varieties,
+                    ensuring consistent quality and taste.
+                  </li>
+                  <li>
+                    Provided exceptional customer service by greeting patrons, taking orders
+                    accurately, and offering menu recommendations based on customer preferences.
+                  </li>
+                  <li>
+                    Collaborated with fellow team members to streamline kitchen operations
+                    and maintain a smooth workflow during busy periods.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="about-section archive-section" aria-labelledby="archive-title">
+        <div class="section-heading">
+          <span class="section-index">05</span>
+          <h2 id="archive-title">ARCHIVE</h2>
         </div>
         <div class="section-copy">
           <p>
@@ -165,8 +375,8 @@
 
       <section class="about-section" aria-labelledby="inspiration-title">
         <div class="section-heading">
-          <span class="section-index">05</span>
-          <h2 id="inspiration-title">Sources of Inspiration</h2>
+          <span class="section-index">06</span>
+          <h2 id="inspiration-title">SOURCES OF INSPIRATION</h2>
         </div>
         <div class="section-copy">
           <ul class="inspiration-links">
