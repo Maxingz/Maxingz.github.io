@@ -159,6 +159,20 @@ a {
   visibility: hidden;
 }
 
+.resume-page {
+  min-height: 100vh;
+  padding-top: 58px;
+}
+
+.resume-pdf {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 58px);
+  min-height: 480px;
+  border: 0;
+  background: #fff;
+}
+
 .header-inner {
   display: grid;
   width: min(100% - 3rem, 1120px);
@@ -1005,6 +1019,14 @@ main {
   .site-header.is-compact:focus-within .header-inner {
     height: auto;
     min-height: 54px;
+  }
+
+  .resume-page {
+    padding-top: 108px;
+  }
+
+  .resume-pdf {
+    height: calc(100svh - 108px);
   }
 
   .site-nav {
