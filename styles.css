@@ -1001,7 +1001,7 @@ main {
   display: grid;
   min-height: 100vh;
   align-content: start;
-  padding: clamp(8rem, 18vh, 12rem) 1.5rem 11rem;
+  padding: clamp(6rem, 12vh, 9rem) 1.5rem 3rem;
 }
 
 .contact-water,
@@ -1034,7 +1034,7 @@ main {
 }
 
 .contact-heading {
-  margin-bottom: 4rem;
+  margin-bottom: clamp(2rem, 8vh, 3rem);
 }
 
 .contact-eyebrow {
@@ -1191,12 +1191,16 @@ main {
 
   .contact-page {
     min-height: 100svh;
-    padding: 8rem 1rem 10rem;
+    padding: 7.5rem 1rem 2rem;
+  }
+
+  .contact-heading {
+    margin-bottom: 2rem;
   }
 
   .contact-cards {
     grid-template-columns: 1fr;
-    gap: 4rem;
+    gap: 1.25rem;
   }
 
   .site-nav {
