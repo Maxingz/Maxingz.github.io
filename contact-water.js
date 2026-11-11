@@ -7,16 +7,82 @@
   const header = document.querySelector('.site-header');
   if (!context || !effects) return;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const cards = [...page.querySelectorAll('.contact-card')].map((element, index) => ({
+  // Keep drawing-buffer dimensions out of document layout, including during CSS loading.
+  for (const layer of [canvas, effectsCanvas]) {
+    Object.assign(layer.style, { position: 'absolute', left: '0', top: '0', width: '0px', height: '0px', pointerEvents: 'none' });
+  }
+  const iceElements = Array.from({ length: 12 }, (_, index) => {
+    const cube = document.createElement('div');
+    cube.className = 'contact-ice';
+    cube.setAttribute('aria-hidden', 'true');
+    cube.style.setProperty('--ice-angle', `${[-9, 7, -5][index % 3]}deg`);
+    cube.innerHTML = '<svg class="ice-cracks" viewBox="0 0 60 60" aria-hidden="true"><path class="ice-crack-first" d="M8 2 24 18 20 28 34 38 29 58 M20 28 6 34 M34 38 48 32"/><path class="ice-crack-second" d="M58 8 43 19 46 27 34 38 45 56 M24 18 36 10 39 1 M43 19 28 24 M46 27 59 35 M29 48 15 54"/></svg>';
+    page.append(cube);
+    return cube;
+  });
+  const cards = [...page.querySelectorAll('.contact-card'), ...iceElements].map((element, index) => ({
     element, phase: index * 2.4, x: 0, y: 0, vx: 0, vy: 0, pointer: null,
+    ice: element.classList.contains('contact-ice'),
     targetX: 0, targetY: 0, baseX: 0, baseY: 0, width: 0, height: 0,
-    bubbleBudget: 0, wakeTime: 0,
+    bubbleBudget: 0, wakeTime: 0, hits: 0, broken: false, enabled: true, wallContacts: new Set(),
   }));
   let width = 0, height = 0, waterline = 0, frame = null, lastTime = 0;
   let ceiling = 0;
+  let layoutKey = '';
   let water = [];
   const particles = [];
+  const shards = [];
+  const impactContacts = new Set();
+  const active = body => !body.ice || (body.enabled && !body.broken);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+  function damageIce(body, speed) {
+    if (!body.ice || !active(body) || speed < 400) return;
+    body.hits++;
+    // First hit: hairline cracks. Second and third: branching fractures. Fourth: shatter.
+    body.element.dataset.cracks = body.hits === 1 ? '1' : '2';
+    if (body.hits < 4) return;
+    body.broken = true;
+    body.element.remove();
+    const cx = body.baseX + body.x + body.width / 2;
+    const cy = body.baseY + body.y + body.height / 2;
+    disturb(cx, 100, 45);
+    if (motion.matches) return;
+    for (let i = 0; i < 9 && shards.length < 96; i++) {
+      const angle = i * Math.PI * 2 / 9;
+      shards.push({ x: cx, y: cy, vx: body.vx * 0.2 + Math.cos(angle) * (70 + Math.random() * 100),
+        vy: body.vy * 0.15 + Math.sin(angle) * 140 - 70, angle, spin: (Math.random() - 0.5) * 10,
+        size: 4 + Math.random() * 6, age: 0 });
+    }
+  }
+
+  function paintShards(dt) {
+    if (motion.matches) { shards.length = 0; return; }
+    for (let i = shards.length - 1; i >= 0; i--) {
+      const p = shards[i];
+      p.age += dt;
+      if (p.age > 1.2) { shards.splice(i, 1); continue; }
+      p.vx *= Math.exp(-dt * 1.3);
+      p.vy += 330 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.angle += p.spin * dt;
+      effects.save();
+      effects.translate(p.x, p.y);
+      effects.rotate(p.angle);
+      effects.globalAlpha = Math.max(0, 1 - p.age / 1.2);
+      effects.beginPath();
+      effects.moveTo(-p.size, -p.size * 0.5);
+      effects.lineTo(p.size * 0.7, -p.size);
+      effects.lineTo(p.size * 0.4, p.size);
+      effects.closePath();
+      effects.fillStyle = 'rgba(224, 247, 252, 0.85)';
+      effects.strokeStyle = 'rgba(255, 255, 255, 0.95)';
+      effects.fill();
+      effects.stroke();
+      effects.restore();
+    }
+  }
 
   function disturb(x, strength, spread = 65) {
     if (motion.matches) return;
@@ -124,18 +190,31 @@
     context.lineWidth = 1.5;
     context.stroke();
     paintParticles(dt, time, surface);
+    paintShards(dt);
   }
 
   function renderCard(card) {
+    if (!active(card)) return;
     card.element.style.setProperty('--float-x', `${card.x}px`);
     card.element.style.setProperty('--float-y', `${card.y}px`);
   }
 
   function contain(card) {
+    if (!active(card)) return;
     const minX = 8 - card.baseX;
     const maxX = width - 8 - card.width - card.baseX;
     const minY = ceiling - card.baseY;
     const maxY = height - 12 - card.height - card.baseY;
+    for (const [side, gap, speed] of [
+      ['left', card.x - minX, -card.vx], ['right', maxX - card.x, card.vx],
+      ['top', card.y - minY, -card.vy], ['bottom', maxY - card.y, card.vy],
+    ]) {
+      if (gap > 4) card.wallContacts.delete(side);
+      if (gap < 0 && !card.wallContacts.has(side)) {
+        card.wallContacts.add(side);
+        damageIce(card, speed);
+      }
+    }
     if (card.x < minX || card.x > maxX) {
       card.x = clamp(card.x, minX, maxX);
       if ((card.x === minX && card.vx < 0) || (card.x === maxX && card.vx > 0)) card.vx *= -0.35;
@@ -147,13 +226,27 @@
   }
 
   function collide() {
+    const bodies = cards.filter(active);
+    // A new impact requires separation first; solver passes and sustained pushing
+    // must not turn one physical contact into four hits.
+    for (let i = 0; i < bodies.length; i++) {
+      for (let j = i + 1; j < bodies.length; j++) {
+        const a = bodies[i], b = bodies[j];
+        const dx = Math.abs(b.baseX + b.x + b.width / 2 - a.baseX - a.x - a.width / 2);
+        const dy = Math.abs(b.baseY + b.y + b.height / 2 - a.baseY - a.y - a.height / 2);
+        if (dx > (a.width + b.width) / 2 + 6 || dy > (a.height + b.height) / 2 + 6) {
+          impactContacts.delete(`${cards.indexOf(a)}:${cards.indexOf(b)}`);
+        }
+      }
+    }
     // Keep cards axis-aligned so visible edges and collision bounds agree.
     // Repeat the solver to handle a card being pushed against a page edge.
     for (let pass = 0; pass < 12; pass++) {
-      cards.forEach(contain);
-      for (let i = 0; i < cards.length; i++) {
-        for (let j = i + 1; j < cards.length; j++) {
-          const a = cards[i], b = cards[j];
+      bodies.forEach(contain);
+      for (let i = 0; i < bodies.length; i++) {
+        for (let j = i + 1; j < bodies.length; j++) {
+          const a = bodies[i], b = bodies[j];
+          if (!active(a) || !active(b)) continue;
           const dx = b.baseX + b.x + b.width / 2 - (a.baseX + a.x + a.width / 2);
           const dy = b.baseY + b.y + b.height / 2 - (a.baseY + a.y + a.height / 2);
           const overlapX = (a.width + b.width) / 2 + 2 - Math.abs(dx);
@@ -165,12 +258,18 @@
           const sign = (horizontal ? dx : dy) >= 0 ? 1 : -1;
           const overlap = horizontal ? overlapX : overlapY;
           // A held card can push its neighbor, but cannot crush it against a wall.
-          const massA = a.pointer === null ? 1 : 0.5;
-          const massB = b.pointer === null ? 1 : 0.5;
+          const massA = a.ice ? 4 : a.pointer === null ? 1 : 0.5;
+          const massB = b.ice ? 4 : b.pointer === null ? 1 : 0.5;
           const total = massA + massB;
           a[axis] -= sign * overlap * massA / total;
           b[axis] += sign * overlap * massB / total;
           const closing = (b[velocity] - a[velocity]) * sign;
+          const contactKey = `${cards.indexOf(a)}:${cards.indexOf(b)}`;
+          if (!impactContacts.has(contactKey)) {
+            impactContacts.add(contactKey);
+            damageIce(a, -closing);
+            damageIce(b, -closing);
+          }
           if (closing < 0) {
             const impulse = -1.25 * closing / total;
             a[velocity] -= impulse * sign * massA;
@@ -184,6 +283,7 @@
 
   function step(dt, time) {
     for (const card of cards) {
+      if (!active(card)) continue;
       card.previousX = card.x;
       card.previousY = card.y;
       if (card.pointer !== null) {
@@ -192,6 +292,12 @@
         card.vy = clamp((card.targetY - card.y) / dt, -1100, 1100);
       } else if (motion.matches) {
         card.vx = card.vy = 0;
+      } else if (card.ice) {
+        const center = clamp((card.baseX + card.x + card.width / 2) / width, 0, 1);
+        const wave = water[Math.round(center * (water.length - 1))]?.y || 0;
+        const target = wave * 0.45 + Math.sin(time * 1.2 + card.phase) * 3;
+        card.vy += ((target - card.y) * 18 - card.vy * 3.1) * dt;
+        card.vx += (Math.sin(time * 0.65 + card.phase) * 3 - card.vx * 1.3) * dt;
       } else {
         const target = Math.sin(time * 1.25 + card.phase) * 3;
         const submerged = clamp((card.baseY + card.y + card.height - waterline) / card.height, 0, 1);
@@ -211,6 +317,7 @@
     collide();
     if (!motion.matches) {
       for (const card of cards) {
+        if (!active(card)) continue;
         const dx = card.x - card.previousX, dy = card.y - card.previousY;
         const speed = Math.hypot(dx, dy) / dt;
         const left = card.baseX + card.x;
@@ -253,7 +360,7 @@
 
   function tick(now) {
     frame = null;
-    const dt = Math.min((now - (lastTime || now - 16.67)) / 1000, 1 / 30);
+    const dt = Math.max(0.001, Math.min((now - (lastTime || now - 16.67)) / 1000, 1 / 30));
     lastTime = now;
     const time = now / 1000;
     updateCeiling();
@@ -275,15 +382,38 @@
 
   function measure() {
     const bounds = page.getBoundingClientRect();
-    width = bounds.width;
-    height = bounds.height;
     const group = page.querySelector('.contact-cards').getBoundingClientRect();
     const heading = page.querySelector('.contact-heading').getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const nextKey = [bounds.width, bounds.height, group.top - bounds.top, group.height,
+      heading.bottom - bounds.top, dpr].map(value => Math.round(value * 100) / 100).join(':');
+    if (!bounds.width || !bounds.height || nextKey === layoutKey) return;
+    layoutKey = nextKey;
+    width = bounds.width;
+    height = bounds.height;
     waterline = (heading.bottom + group.top) / 2 - bounds.top;
     water = Array.from({ length: Math.max(2, Math.ceil(width / 16) + 1) }, () => ({ y: 0, v: 0 }));
     particles.length = 0;
+    impactContacts.clear();
     updateCeiling();
+    // A little ice protrudes above the soda; the rest sits below its surface.
+    const cubeCount = clamp(Math.floor(width / 150), 3, 12);
+    cards.filter(card => card.ice).forEach((card, index) => {
+      card.enabled = index < cubeCount;
+      card.element.hidden = !card.enabled || card.broken;
+      if (!active(card)) return;
+      const size = (width < 760 ? 34 : 48) + [4, 12, 0][index % 3];
+      card.baseX = width * (index + 0.5) / cubeCount - size / 2;
+      card.baseY = waterline - size * 0.62;
+      card.width = card.height = size;
+      card.x = card.y = card.vx = card.vy = 0;
+      card.wallContacts.clear();
+      Object.assign(card.element.style, {
+        left: `${card.baseX}px`, top: `${card.baseY}px`, width: `${size}px`, height: `${size}px`,
+      });
+    });
     for (const card of cards) {
+      if (card.ice) continue;
       const rect = card.element.getBoundingClientRect();
       card.baseX = rect.left - bounds.left - card.x;
       card.baseY = rect.top - bounds.top - card.y;
@@ -293,7 +423,10 @@
     }
     collide();
     cards.forEach(renderCard);
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    for (const layer of [canvas, effectsCanvas]) {
+      layer.style.width = `${width}px`;
+      layer.style.height = `${height}px`;
+    }
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -315,6 +448,7 @@
   }
 
   for (const card of cards) {
+    if (card.ice) continue;
     card.element.addEventListener('pointerdown', (event) => {
       if (event.button !== 0 || card.pointer !== null || event.target.closest('a, button')) return;
       card.pointer = event.pointerId;
@@ -369,6 +503,10 @@
     } else start();
   });
   motion.addEventListener('change', start);
-  new ResizeObserver(measure).observe(page);
+  const layoutObserver = new ResizeObserver(measure);
+  layoutObserver.observe(page);
+  layoutObserver.observe(page.querySelector('.contact-cards'));
+  window.addEventListener('resize', measure);
+  window.addEventListener('load', measure);
   measure();
 })();
