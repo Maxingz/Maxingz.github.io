@@ -7,6 +7,8 @@
     <title>Contact — Max Guo</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="navigation.js" defer></script>
+    <script src="contact-copy.js" defer></script>
+    <script src="contact-water.js" defer></script>
   </head>
   <body>
     <header class="site-header" id="site-header">
@@ -21,6 +23,56 @@
         </nav>
       </div>
     </header>
-    <main aria-label="Contact page"></main>
+    <main class="contact-page" aria-label="Contact page">
+      <canvas class="contact-water" aria-hidden="true"></canvas>
+      <canvas class="contact-water-effects" aria-hidden="true"></canvas>
+      <section class="contact-section" aria-labelledby="contact-title">
+        <div class="contact-heading">
+          <h1 id="contact-title">MY CONTACT INFO</h1>
+        </div>
+        <div class="contact-cards">
+          <article class="contact-card" tabindex="0" aria-label="Max's contact card" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight">
+            <h2>MAX GUO</h2>
+            <dl class="contact-details">
+              <div>
+                <dt>Email</dt>
+                <dd><a href="mailto:maxguo3721@gmail.com" data-copy-value="maxguo3721@gmail.com" title="Email Max">maxguo3721@gmail.com</a></dd>
+              </div>
+              <div>
+                <dt>Phone</dt>
+                <dd><a href="tel:+16729991988">+1 672-999-1988</a></dd>
+              </div>
+              <div>
+                <dt>LinkedIn</dt>
+                <dd>
+                  <a
+                    href="https://www.linkedin.com/in/max-guo-6599191aa/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >linkedin.com/in/max-guo-6599191aa</a>
+                </dd>
+              </div>
+            </dl>
+          </article>
+          <article class="contact-card" tabindex="0" aria-label="Co-op advisor contact card" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight">
+            <h2>CO-OP ADVISOR CONTACT INFO</h2>
+            <dl class="contact-details">
+              <div>
+                <dt>Name</dt>
+                <dd>Lily Chen</dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd><a href="mailto:lily.chen@ubc.ca" data-copy-value="lily.chen@ubc.ca" title="Email Lily">lily.chen@ubc.ca</a></dd>
+              </div>
+              <div>
+                <dt>Phone</dt>
+                <dd><a href="tel:+16048223214">+1 604-822-3214</a></dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
