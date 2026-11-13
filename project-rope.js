@@ -33,6 +33,7 @@
   const count = 36;
   const dt = 1 / 120;
   let points = [], attachments = [], length = 0, center = 0;
+  let boxSwings = [];
   let frame = null, previous = 0, accumulator = 0, quiet = 0;
   let drag = null;
   const hit = paths[3];
@@ -91,6 +92,34 @@
   }
   for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) hit.addEventListener(type, release);
 
+  function attachmentPoint(i) {
+    const index = Math.min(count - 1, Math.floor(attachments[i]));
+    const fraction = attachments[i] - index;
+    const a = points[index], b = points[index + 1];
+    return { x: a.x + (b.x - a.x) * fraction, y: a.y + (b.y - a.y) * fraction };
+  }
+
+  function stepBoxes() {
+    boxSwings.forEach((swing, i) => {
+      const pivot = attachmentPoint(i);
+      const vx = (pivot.x - swing.x) / dt;
+      const vy = (pivot.y - swing.y) / dt;
+      // Smooth solver impulses while retaining the inertia of a freely hung sign.
+      const ax = Math.max(-6000, Math.min(6000, (vx - swing.vx) / dt));
+      const ay = Math.max(-6000, Math.min(6000, (vy - swing.vy) / dt));
+      swing.ax += (ax - swing.ax) * 0.18;
+      swing.ay += (ay - swing.ay) * 0.18;
+      const torque = (swing.ax * Math.cos(swing.angle)
+        - (1600 - swing.ay) * Math.sin(swing.angle)) / swing.pendulumLength;
+      swing.velocity = (swing.velocity + torque * dt) * Math.exp(-1.8 * dt);
+      swing.angle += swing.velocity * dt;
+      swing.x = pivot.x;
+      swing.y = pivot.y;
+      swing.vx = vx;
+      swing.vy = vy;
+    });
+  }
+
   function render() {
     const d = points.map((point, i) => `${i ? 'L' : 'M'}${point.x.toFixed(2)},${point.y.toFixed(2)}`).join(' ');
     paths.forEach(path => path.setAttribute('d', d));
@@ -98,13 +127,11 @@
     const endAngle = -Math.atan2(end.x - beforeEnd.x, end.y - beforeEnd.y) * 180 / Math.PI;
     endCap.setAttribute('transform', `translate(${end.x},${end.y}) rotate(${endAngle})`);
     links.forEach((link, i) => {
-      const index = Math.min(count - 1, Math.floor(attachments[i]));
-      const fraction = attachments[i] - index;
-      const above = points[index], below = points[index + 1];
-      const point = { x: above.x + (below.x - above.x) * fraction, y: above.y + (below.y - above.y) * fraction };
-      const angle = Math.max(-18, Math.min(18, -Math.atan2(below.x - above.x, below.y - above.y) * 180 / Math.PI));
+      const point = attachmentPoint(i);
+      const angle = boxSwings[i].angle * 180 / Math.PI;
       link.style.left = `${point.x}px`;
-      link.style.top = `${point.y - link.offsetHeight / 2}px`;
+      // The dot is centered on the top border, which is also the rotation pivot.
+      link.style.top = `${point.y}px`;
       link.style.transform = `translateX(-50%) rotate(${angle}deg)`;
     });
   }
@@ -160,10 +187,12 @@
     frame = null;
     accumulator += Math.min((time - previous) / 1000, 0.05);
     previous = time;
-    while (accumulator >= dt) { step(); accumulator -= dt; }
+    while (accumulator >= dt) { step(); stepBoxes(); accumulator -= dt; }
     render();
     const speed = Math.max(...points.map(p => Math.hypot(p.x - p.oldX, p.y - p.oldY)));
-    quiet = speed < 0.025 ? quiet + 1 : 0;
+    const boxesStill = boxSwings.every(swing => Math.abs(swing.velocity) < 0.003
+      && Math.abs(Math.sin(swing.angle)) < 0.003);
+    quiet = speed < 0.025 && boxesStill ? quiet + 1 : 0;
     if (drag || quiet < 90) frame = requestAnimationFrame(tick);
   }
 
@@ -180,9 +209,9 @@
     center = rope.clientWidth / 2;
     length = height / count;
     const header = document.querySelector('.site-header')?.getBoundingClientRect().height || 0;
-    const halfBox = Math.max(...links.map(link => link.offsetHeight)) / 2;
-    const first = Math.min(count - 2, (header + halfBox + 30) / length);
-    const last = Math.max(first, (height - halfBox - 40) / length);
+    const boxHeight = Math.max(...links.map(link => link.offsetHeight));
+    const first = Math.min(count - 2, (header + 30) / length);
+    const last = Math.max(first, (height - boxHeight - 40) / length);
     // Fractional positions keep spacing exact instead of snapping signs to nodes.
     attachments = links.map((_, i) => links.length === 1 ? (first + last) / 2 : first + (last - first) * i / (links.length - 1));
     const weightedNodes = new Set(attachments.map(position => Math.round(position)));
@@ -192,6 +221,12 @@
       const y = falling ? i * length * 0.12 : i * length;
       return { x, y, oldX: x - (falling ? Math.sin(i * 0.3) * 0.7 : 0), oldY: y,
         weight: i === 0 ? 0 : weightedNodes.has(i) ? 0.4 : 1 };
+    });
+    boxSwings = links.map((link, i) => {
+      const pivot = attachmentPoint(i);
+      const h = Math.max(1, link.offsetHeight), w = Math.max(1, link.offsetWidth);
+      return { ...pivot, vx: 0, vy: 0, ax: 0, ay: 0, angle: 0, velocity: 0,
+        pendulumLength: (w * w / 12 + h * h / 3) / (h / 2) };
     });
     render();
     quiet = 0;

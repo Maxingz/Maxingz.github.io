@@ -1281,7 +1281,7 @@ main {
 .project-rope-box::before {
   content: '';
   position: absolute;
-  top: -0.24rem;
+  top: calc(-0.22rem - 2px);
   left: calc(50% - 0.22rem);
   width: 0.44rem;
   height: 0.44rem;
