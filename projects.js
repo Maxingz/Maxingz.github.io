@@ -4,9 +4,9 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   // Enhance native details into the same grid accordion used by Work Experience.
   // Without JavaScript, the original details elements still work normally.
-  const projects = [...page.querySelectorAll('.project-entry')].map(details => {
+  const projects = [...page.querySelectorAll('.project-entry')].map((details, index) => {
     const project = document.createElement('section');
-    project.id = details.id;
+    project.id = details.id || `project-${index + 1}`;
     project.className = 'project-entry is-expanded';
     const heading = document.createElement('h2');
     heading.className = 'project-heading';
@@ -37,6 +37,34 @@
       if (event.propertyName === 'grid-template-rows') project.dispatchEvent(new Event('toggle'));
     });
     return project;
+  });
+  const rope = document.querySelector('.project-rope');
+  if (rope) {
+    rope.replaceChildren(...projects.map(project => {
+      const link = document.createElement('a');
+      link.className = 'project-rope-box';
+      link.href = `#${project.id}`;
+      link.textContent = project.querySelector('.project-toggle').textContent.trim();
+      return link;
+    }));
+  }
+  const header = document.querySelector('.site-header');
+  function updateHeaderSpace() {
+    const height = header?.getBoundingClientRect().height || 0;
+    document.documentElement.style.setProperty('--project-header-height', `${height}px`);
+  }
+  updateHeaderSpace();
+  if (header && 'ResizeObserver' in window) new ResizeObserver(updateHeaderSpace).observe(header);
+  rope?.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const project = projects.find(item => `#${item.id}` === link.hash);
+    if (!project) return;
+    event.preventDefault();
+    if (!project.classList.contains('is-expanded')) project.querySelector('.project-toggle').click();
+    project.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+    history.replaceState(null, '', link.hash);
+    project.querySelector('.project-toggle').focus({ preventScroll: true });
   });
   if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
   const nextReveal = new Map();
