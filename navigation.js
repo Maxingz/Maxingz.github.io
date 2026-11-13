@@ -2,6 +2,13 @@ const siteHeader = document.querySelector("#site-header");
 const navLinks = document.querySelectorAll(".nav-link");
 const aboutHero = document.querySelector(".hero");
 const aboutSection = document.querySelector(".transition-about");
+if (siteHeader && aboutSection) {
+  const updateAboutHeaderHeight = () => {
+    aboutSection.style.setProperty("--about-header-height", `${siteHeader.getBoundingClientRect().height}px`);
+  };
+  updateAboutHeaderHeight();
+  new ResizeObserver(updateAboutHeaderHeight).observe(siteHeader);
+}
 const aboutStage = document.querySelector(".about-transition-stage");
 const scrollCue = document.querySelector(".scroll-cue");
 const desktopNotice = document.querySelector(".desktop-notice");
@@ -335,7 +342,7 @@ archivePreview?.addEventListener("click", (event) => {
 
 function positionDescription(link) {
   const description = link.querySelector(".nav-description");
-  if (!description || window.innerWidth > 760) return;
+  if (!description || !window.matchMedia("(max-width: 71.25rem)").matches) return;
 
   const linkBounds = link.getBoundingClientRect();
   const descriptionWidth = description.getBoundingClientRect().width;

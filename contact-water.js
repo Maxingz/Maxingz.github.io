@@ -397,12 +397,13 @@
     impactContacts.clear();
     updateCeiling();
     // A little ice protrudes above the soda; the rest sits below its surface.
-    const cubeCount = clamp(Math.floor(width / 150), 3, 12);
+    const contentScale = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16 || 1;
+    const cubeCount = clamp(Math.floor(width / (150 * contentScale)), 3, 12);
     cards.filter(card => card.ice).forEach((card, index) => {
       card.enabled = index < cubeCount;
       card.element.hidden = !card.enabled || card.broken;
       if (!active(card)) return;
-      const size = (width < 760 ? 34 : 48) + [4, 12, 0][index % 3];
+      const size = ((width / contentScale < 760 ? 34 : 48) + [4, 12, 0][index % 3]) * contentScale;
       card.baseX = width * (index + 0.5) / cubeCount - size / 2;
       card.baseY = waterline - size * 0.62;
       card.width = card.height = size;
