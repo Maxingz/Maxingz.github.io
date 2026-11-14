@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#fffaf5" />
     <title>Other Interests — Max Guo</title>
-    <link rel="stylesheet" href="styles.css?v=d1c22c8ab61c" />
+    <link rel="stylesheet" href="styles.css?v=cfacc3ad5915" />
     <script src="navigation.js" defer></script>
-    <script src="interests.js?v=00fac51f052b" defer></script>
+    <script src="interests.js?v=c02490a014e5" defer></script>
   </head>
   <body>
     <header class="site-header" id="site-header">
@@ -93,8 +93,68 @@
       </section>
       <section class="activities-section" aria-labelledby="activities-title">
         <h2 id="activities-title">Activities &amp; board games</h2>
-        <p>All of these are things I enjoy. The six individual board games share the archived Board Games average of 8/10; their skill levels are individual.</p>
+        <p>All of these are things I enjoy. Drop an activity into the basket to discover more.</p>
         <div class="activity-grid">
+          <div class="activity-card-with-tip">
+            <div class="activity-first-tip" hidden>
+              Drop me into the basket!
+              <button type="button" class="activity-tip-dismiss" aria-label="Dismiss drop activity hint">×</button>
+            </div>
+          <button class="activity-card" type="button" data-rating="8" data-name="Wordle" aria-pressed="false">
+            <img src="archive/interests/wordle.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Wordle</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for Wordle: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                Everyone has heard of wordle but have you heard of poople? I specialize in all the dles. This includes craftdle, angle, and so much more. 
+                If I could recommend only one dle game it would be poople. Check it out. 
+              </p>
+            </template>
+          </button>
+          </div>
+          <button class="activity-card" type="button" data-rating="9.5" data-name="Skiing" aria-pressed="false">
+            <img src="archive/interests/Skiing.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Skiing</span><span class="activity-rating">Interest: 9.5/10</span><span class="activity-skill">Skill: Proficient/Expert</span>
+            <!-- INFO for Skiing: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                Skiing/Snowboarding is my favorite winter sport. Started off snowboarding at around 12, switched over to skiing. Never understood the animosity between
+                 the two sports. I have yet to conquer my fear of double black diamonds. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="Snowboarding" aria-pressed="false">
+            <img src="archive/interests/snowboarding.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Snowboarding</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Proficient</span>
+            <!-- INFO for Snowboarding: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I definitely have a better affinity for skiing than snowboarding. Might pick up snowboarding again in the future. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8.5" data-name="Archery" aria-pressed="false">
+            <img src="archive/interests/archery.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Archery</span><span class="activity-rating">Interest: 8.5/10</span><span class="activity-skill">Skill: Novice</span>
+            <!-- INFO for Archery: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                In grade 7 my class had an outdoor retreat consisting of many great outdoor activities, one of them being archery. 
+                One of my most fondest memories was being challenged by a friend to hit an arrow on every ring of the target which I did. 
+                One of my greatest accomplishments. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="10" data-name="Eating Good Food" aria-pressed="false">
+            <img src="archive/interests/food.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Eating Good Food</span><span class="activity-rating">Interest: 10/10</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for Eating Good Food: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                What is there not to love about eating good food? 
+              </p>
+            </template>
+          </button>
           <button class="activity-card" type="button" data-rating="9.5" data-name="8 Ball Pool" aria-pressed="false">
             <img src="archive/interests/pool.jpg" alt="" loading="lazy" draggable="false" />
             <span class="activity-name">8 Ball Pool</span><span class="activity-rating">Interest: 9.5/10</span><span class="activity-skill">Skill: Intermediate</span>
@@ -115,17 +175,6 @@
               <p>
                 I won't lie, I am terrible at table tennis. I thought I would be decent given my uh... background 
                 but I have yet to awaken my inner ping pong skill.
-              </p>
-            </template>
-          </button>
-          <button class="activity-card" type="button" data-rating="8" data-name="Wordle" aria-pressed="false">
-            <img src="archive/interests/wordle.webp" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">Wordle</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Expert</span>
-            <!-- INFO for Wordle: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-                Everyone has heard of wordle but have you heard of poople? I specialize in all the dles. This includes craftdle, angle, and so much more. 
-                If I could recommend only one dle game it would be poople. Check it out. 
               </p>
             </template>
           </button>
@@ -172,27 +221,6 @@
               </p>
             </template>
           </button>
-          <button class="activity-card" type="button" data-rating="9.5" data-name="Skiing" aria-pressed="false">
-            <img src="archive/interests/Skiing.jpg" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">Skiing</span><span class="activity-rating">Interest: 9.5/10</span><span class="activity-skill">Skill: Proficient/Expert</span>
-            <!-- INFO for Skiing: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-                Skiing/Snowboarding is my favorite winter sport. Started off snowboarding at around 12, switched over to skiing. Never understood the animosity between
-                 the two sports. I have yet to conquer my fear of double black diamonds. 
-              </p>
-            </template>
-          </button>
-          <button class="activity-card" type="button" data-rating="8" data-name="Snowboarding" aria-pressed="false">
-            <img src="archive/interests/snowboarding.jpg" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">Snowboarding</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Proficient</span>
-            <!-- INFO for Snowboarding: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-                I definitely have a better affinity for skiing than snowboarding. Might pick up snowboarding again in the future. 
-              </p>
-            </template>
-          </button>
           <button class="activity-card" type="button" data-rating="7" data-name="Hiking" aria-pressed="false">
             <img src="archive/interests/hiking2.jpg" alt="" loading="lazy" draggable="false" />
             <span class="activity-name">Hiking</span><span class="activity-rating">Interest: 7/10</span><span class="activity-skill">Skill: Intermediate</span>
@@ -223,18 +251,6 @@
               </p>
             </template>
           </button>
-          <button class="activity-card" type="button" data-rating="8.5" data-name="Archery" aria-pressed="false">
-            <img src="archive/interests/archery.webp" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">Archery</span><span class="activity-rating">Interest: 8.5/10</span><span class="activity-skill">Skill: Novice</span>
-            <!-- INFO for Archery: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-                In grade 7 my class had an outdoor retreat consisting of many great outdoor activities, one of them being archery. 
-                One of my most fondest memories was being challenged by a friend to hit an arrow on every ring of the target which I did. 
-                One of my greatest accomplishments. 
-              </p>
-            </template>
-          </button>
           <button class="activity-card" type="button" data-rating="8" data-name="Camping" aria-pressed="false">
             <img src="archive/interests/camping.jpg" alt="" loading="lazy" draggable="false" />
             <span class="activity-name">Camping</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Novice</span>
@@ -246,65 +262,10 @@
               </p>
             </template>
           </button>
-          <button class="activity-card" type="button" data-rating="9" data-name="Eating Good Food" aria-pressed="false">
-            <img src="archive/interests/food.webp" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">Eating Good Food</span><span class="activity-rating">Interest: 10/10</span><span class="activity-skill">Skill: Expert</span>
-            <!-- INFO for Eating Good Food: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-                What is there not to love about eating good food? 
-              </p>
-            </template>
-          </button>
-          <button class="activity-card" type="button" data-rating="8" data-name="CATAN" aria-pressed="false">
-            <img src="archive/interests/catan.jpg" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">CATAN</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Intermediate</span>
-            <!-- INFO for CATAN: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-              </p>
-            </template>
-          </button>
-          <button class="activity-card" type="button" data-rating="8" data-name="Go" aria-pressed="false">
-            <img src="archive/interests/boardgame.jpg" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">Go</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Expert</span>
-            <!-- INFO for Go: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-              </p>
-            </template>
-          </button>
-          <button class="activity-card" type="button" data-rating="8" data-name="MIKADO" aria-pressed="false">
-            <img src="archive/interests/mikado.jpg" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">MIKADO</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Proficient</span>
-            <!-- INFO for MIKADO: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-              </p>
-            </template>
-          </button>
-          <button class="activity-card" type="button" data-rating="8" data-name="Chess" aria-pressed="false">
-            <img src="archive/interests/Chess.png" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">Chess</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Intermediate</span>
-            <!-- INFO for Chess: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-              </p>
-            </template>
-          </button>
           <button class="activity-card" type="button" data-rating="8" data-name="POLYTOPIA" aria-pressed="false">
             <img src="archive/interests/polytopia.jpg" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">POLYTOPIA</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Expert</span>
+            <span class="activity-name">POLYTOPIA</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Intermediate</span>
             <!-- INFO for POLYTOPIA: write your paragraph between the <p> tags below. -->
-            <template class="activity-info">
-              <p>
-              </p>
-            </template>
-          </button>
-          <button class="activity-card" type="button" data-rating="8" data-name="RISK!" aria-pressed="false">
-            <img src="archive/interests/risk.webp" alt="" loading="lazy" draggable="false" />
-            <span class="activity-name">RISK!</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Intermediate</span>
-            <!-- INFO for RISK!: write your paragraph between the <p> tags below. -->
             <template class="activity-info">
               <p>
               </p>

@@ -46,7 +46,7 @@
             const y = word.getBoundingClientRect().top;
             if (top !== null && Math.abs(y - top) > 2) line++;
             top = y;
-            word.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 800, delay: line * 130, easing: 'ease', fill: 'backwards' });
+            word.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: line * 65, easing: 'ease', fill: 'backwards' });
           }
           if (words.length) line++;
         }

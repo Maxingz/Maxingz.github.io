@@ -1333,7 +1333,7 @@ button.project-toggle { width: 100%; border: 0; background: none; color: inherit
 .project-toggle::-webkit-details-marker { display: none; }
 .project-toggle h2, button.project-toggle {
   display: grid;
-  grid-template-columns: 1rem minmax(0, 1fr) auto;
+  grid-template-columns: 1rem minmax(0, 1.2fr) minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
   margin: 0;
@@ -1341,6 +1341,12 @@ button.project-toggle { width: 100%; border: 0; background: none; color: inherit
   line-height: 1.35;
 }
 .project-toggle:focus-visible { outline: 0.125rem solid var(--accent); outline-offset: 0.25rem; }
+.project-skills { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.35rem; }
+.project-skill { display: inline-block; padding: 0.3rem 0.55rem; border: 1px solid #ec873a; border-radius: 0.4rem; background: #ffead4; color: #783f17; font-size: 0.65rem; font-weight: 500; line-height: 1.35; }
+@media (max-width: 48rem) {
+  .project-toggle h2, button.project-toggle { grid-template-columns: 1rem minmax(0, 1fr); }
+  .project-skills { grid-column: 2; justify-content: flex-start; }
+}
 .project-arrow {
   width: 0.65rem;
   height: 0.85rem;
@@ -1386,9 +1392,9 @@ button.project-toggle { width: 100%; border: 0; background: none; color: inherit
 }
 .project-reveal {
   opacity: 0;
-  transition: opacity 800ms ease var(--reveal-delay, 0ms);
+  transition: opacity 400ms ease var(--reveal-delay, 0ms);
 }
-.project-reveal-image { transition-duration: 1000ms; }
+.project-reveal-image { transition-duration: 500ms; }
 .project-reveal.is-revealed { opacity: 1; }
 @media (max-width: 71.25rem) {
   .projects-page { width: calc(100% - 9rem); margin-right: 8rem; padding-top: 9rem; }

@@ -44,7 +44,7 @@
       const link = document.createElement('a');
       link.className = 'project-rope-box';
       link.href = `#${project.id}`;
-      link.textContent = project.querySelector('.project-toggle').textContent.trim();
+      link.textContent = project.querySelector('.project-title').textContent.trim();
       return link;
     }));
   }
@@ -106,7 +106,7 @@
         element.classList.add('is-revealed');
       }
       // The sequence continues at its own pace, even if the visitor scrolls ahead.
-      nextReveal.set(item.project, start + (item.image ? 240 : 130));
+      nextReveal.set(item.project, start + (item.image ? 120 : 65));
       observer.unobserve(entry.target);
       targets.delete(entry.target);
     }
