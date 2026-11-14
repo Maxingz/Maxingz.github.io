@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#fffaf5" />
     <title>Other Interests — Max Guo</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=d1c22c8ab61c" />
     <script src="navigation.js" defer></script>
+    <script src="interests.js?v=00fac51f052b" defer></script>
   </head>
   <body>
     <header class="site-header" id="site-header">
@@ -21,6 +22,297 @@
         </nav>
       </div>
     </header>
-    <main aria-label="Other interests page"></main>
+    <main class="interests-page">
+      <header class="interests-heading">
+        <h1>OTHER INTERESTS</h1>
+        <p>Outside of academics and engineering: casual hobbies, physical activities, and the games I enjoy.</p>
+      </header>
+      <section class="happiness-station" aria-labelledby="happiness-title">
+        <div class="happiness-heading">
+          <h2 id="happiness-title">Happiness Seesaw</h2>
+          <button type="button" class="happiness-hint-button" aria-label="Show seesaw hints" aria-controls="happiness-hints" aria-expanded="false">?</button>
+        </div>
+        <div class="happiness-hints" id="happiness-hints" hidden>
+          <aside class="happiness-hint">
+            <button type="button" class="hint-dismiss" aria-label="Dismiss happiness scale hint">×</button>
+            <strong>My happiness scale</strong>
+            <p>The numbers show how much I enjoy each activity, from 1 being I absolutely despise it to 10 being I absolutely love it.</p>
+          </aside>
+          <aside class="happiness-hint">
+            <button type="button" class="hint-dismiss" aria-label="Dismiss seesaw movement hint">×</button>
+            <strong>Watch it move</strong>
+            <p>A higher rating tilts the seesaw farther. The slider finds the activity’s corresponding number.</p>
+          </aside>
+          <aside class="happiness-hint" data-drop-hint>
+            <button type="button" class="hint-dismiss" aria-label="Dismiss basket drop hint">×</button>
+            <strong>Drop into the basket</strong>
+            <p>Release a hobby in the highlighted area above the basket, or select its card. Grab it again to toss it away.</p>
+          </aside>
+        </div>
+        <div class="happiness-display">
+          <aside class="hobby-detail-panel hobby-notes-panel" aria-label="Hobby details" aria-hidden="true">
+            <h4 class="hobby-detail-caption">INFO</h4>
+            <div class="hobby-notes"></div>
+          </aside>
+        <svg class="happiness-scene" viewBox="0 0 1000 330" role="group" aria-label="Happiness scale from one to ten. Select an activity to see its rating.">
+          <ellipse cx="500" cy="304" rx="270" ry="12" fill="#e9d8c7" opacity="0.5" />
+          <path d="M500 174 L435 299 L565 299 Z" fill="#f7c18c" stroke="#d77526" stroke-width="3" />
+          <g class="happiness-beam">
+            <g class="happiness-person" aria-hidden="true">
+              <svg x="110" y="-6" width="160" height="180" viewBox="350 310 555 640" overflow="hidden">
+                <image href="assets/interests/seated-person.png" width="1254" height="1254" />
+              </svg>
+            </g>
+            <svg x="60" y="138" width="880" height="90" viewBox="51 1 1178 120" preserveAspectRatio="none" overflow="hidden">
+              <image href="archive/interests/happinessbar-Photoroom.png" width="1280" height="166" />
+              <!-- Continue the adjacent green strip over the baked-in pointer only. -->
+              <svg x="1151" y="99" width="38" height="22" viewBox="1194 99 30 22" preserveAspectRatio="none" overflow="hidden">
+                <image href="archive/interests/happinessbar-Photoroom.png" width="1280" height="166" />
+              </svg>
+            </svg>
+            <g class="happiness-slider" transform="translate(500 0)">
+              <rect x="-39" y="135" width="78" height="96" rx="5" fill="none" stroke="#28221e" stroke-width="4" />
+              <rect x="-27" y="233" width="54" height="30" rx="6" fill="#28221e" />
+              <text class="happiness-value" x="0" y="255" text-anchor="middle" fill="white" font-size="21" font-weight="700">–</text>
+            </g>
+            <g class="happiness-drop-zone">
+              <rect class="happiness-target-hint" x="690" y="-60" width="260" height="100" rx="12" fill="#ffa54c" fill-opacity="0.12" stroke="#ed762c" stroke-width="3" stroke-dasharray="7 6" pointer-events="none" />
+              <path d="M725 57 L735 134 L905 134 L915 57" fill="#d8dfe2" fill-opacity="0.1" stroke="#b0c0c9" stroke-width="2" />
+            </g>
+          </g>
+          <circle cx="500" cy="179" r="9" fill="#a85722" />
+        </svg>
+          <aside class="hobby-detail-panel hobby-rating-panel" aria-label="Interest and skill" aria-hidden="true">
+            <h4 class="hobby-detail-caption">INTERESTS</h4>
+            <p class="hobby-detail-interest"></p>
+            <h4 class="hobby-detail-caption">SKILLS</h4>
+            <p class="hobby-detail-skill"></p>
+          </aside>
+        </div>
+        <p class="happiness-result" role="status" aria-live="polite"></p>
+      </section>
+      <section class="activities-section" aria-labelledby="activities-title">
+        <h2 id="activities-title">Activities &amp; board games</h2>
+        <p>All of these are things I enjoy. The six individual board games share the archived Board Games average of 8/10; their skill levels are individual.</p>
+        <div class="activity-grid">
+          <button class="activity-card" type="button" data-rating="9.5" data-name="8 Ball Pool" aria-pressed="false">
+            <img src="archive/interests/pool.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">8 Ball Pool</span><span class="activity-rating">Interest: 9.5/10</span><span class="activity-skill">Skill: Intermediate</span>
+            <!-- INFO for 8 Ball Pool: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I played 8 Ball a lot at my friend's apartment as their lounge contained a snooker table. 
+                There was an additional challenge driving balls into smaller sized holes. It was great fun 
+                to just hang enjoy the game with friends who didn't take it seriously. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="6" data-name="Table Tennis" aria-pressed="false">
+            <img src="archive/interests/tabletennis.avif" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Table Tennis</span><span class="activity-rating">Interest: 6/10</span><span class="activity-skill">Skill: Advanced Beginner</span>
+            <!-- INFO for Table Tennis: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I won't lie, I am terrible at table tennis. I thought I would be decent given my uh... background 
+                but I have yet to awaken my inner ping pong skill.
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="Wordle" aria-pressed="false">
+            <img src="archive/interests/wordle.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Wordle</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for Wordle: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                Everyone has heard of wordle but have you heard of poople? I specialize in all the dles. This includes craftdle, angle, and so much more. 
+                If I could recommend only one dle game it would be poople. Check it out. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="6.5" data-name="Disc Golf" aria-pressed="false">
+            <img src="archive/interests/ultimatefrisbee.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Disc Golf</span><span class="activity-rating">Interest: 6.5/10</span><span class="activity-skill">Skill: Intermediate</span>
+            <!-- INFO for Disc Golf: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I went to main island and played disc golf with friends for two weeks. This was a one time event but I have full confidence to claim
+                 that my skill level is intermediate. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="7" data-name="Badminton" aria-pressed="false">
+            <img src="archive/interests/badminton.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Badminton</span><span class="activity-rating">Interest: 7/10</span><span class="activity-skill">Skill: Intermediate</span>
+            <!-- INFO for Badminton: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                Yes I play badminton. There is not much else to say. Great game, I just don't have the stamina to match it. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="5" data-name="Swimming" aria-pressed="false">
+            <span class="activity-water" aria-hidden="true">≈</span>
+            <span class="activity-name">Swimming</span><span class="activity-rating">Interest: 5/10</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for Swimming: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I began swimming lessons when I was 3 years old. Great sport to stay in shape, just not enjoyable at all. I was enrolled in a competitive swimming team.
+                 Never got to love the sport. I'd like to think I'm a great swimmer and I'm always down to go swimming as long as its for recreational purposes. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="7.5" data-name="Golf" aria-pressed="false">
+            <img src="archive/interests/golf.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Golf</span><span class="activity-rating">Interest: 7.5/10</span><span class="activity-skill">Skill: Novice</span>
+            <!-- INFO for Golf: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                It feels like everytime I play golf I'm learning the game again for the first time. Incredibly fun to play, 
+                I just have to relearn the techniques. I feel like golf requires consistency to improve. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="9.5" data-name="Skiing" aria-pressed="false">
+            <img src="archive/interests/Skiing.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Skiing</span><span class="activity-rating">Interest: 9.5/10</span><span class="activity-skill">Skill: Proficient/Expert</span>
+            <!-- INFO for Skiing: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                Skiing/Snowboarding is my favorite winter sport. Started off snowboarding at around 12, switched over to skiing. Never understood the animosity between
+                 the two sports. I have yet to conquer my fear of double black diamonds. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="Snowboarding" aria-pressed="false">
+            <img src="archive/interests/snowboarding.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Snowboarding</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Proficient</span>
+            <!-- INFO for Snowboarding: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I definitely have a better affinity for skiing than snowboarding. Might pick up snowboarding again in the future. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="7" data-name="Hiking" aria-pressed="false">
+            <img src="archive/interests/hiking2.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Hiking</span><span class="activity-rating">Interest: 7/10</span><span class="activity-skill">Skill: Intermediate</span>
+            <!-- INFO for Hiking: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I started hiking a lot recently more as a way to keep my health in check. Great activity to do with friends who don't like planning.  
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="Board Games" aria-pressed="false">
+            <img src="archive/interests/boardgame.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Board Games</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Depends</span>
+            <!-- INFO for Board Games: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I have not experienced a great variety of board games. My few favorites are CATAN, Chess, Go, MIKADO,and Munchkin.
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="6" data-name="Reading" aria-pressed="false">
+            <img src="archive/interests/reading.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Reading</span><span class="activity-rating">Interest: 6/10</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for Reading: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                People generally like you better when you read. So I put reading here. I read books here and there I swear I'm not larping.
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8.5" data-name="Archery" aria-pressed="false">
+            <img src="archive/interests/archery.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Archery</span><span class="activity-rating">Interest: 8.5/10</span><span class="activity-skill">Skill: Novice</span>
+            <!-- INFO for Archery: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                In grade 7 my class had an outdoor retreat consisting of many great outdoor activities, one of them being archery. 
+                One of my most fondest memories was being challenged by a friend to hit an arrow on every ring of the target which I did. 
+                One of my greatest accomplishments. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="Camping" aria-pressed="false">
+            <img src="archive/interests/camping.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Camping</span><span class="activity-rating">Interest: 8/10</span><span class="activity-skill">Skill: Novice</span>
+            <!-- INFO for Camping: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                I used to go camping a lot with my family when I was younger. I have tried countless times to convince my friends to go on a camping trip. 
+                My plans have yet to bear fruit. 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="9" data-name="Eating Good Food" aria-pressed="false">
+            <img src="archive/interests/food.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Eating Good Food</span><span class="activity-rating">Interest: 10/10</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for Eating Good Food: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+                What is there not to love about eating good food? 
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="CATAN" aria-pressed="false">
+            <img src="archive/interests/catan.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">CATAN</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Intermediate</span>
+            <!-- INFO for CATAN: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="Go" aria-pressed="false">
+            <img src="archive/interests/boardgame.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Go</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for Go: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="MIKADO" aria-pressed="false">
+            <img src="archive/interests/mikado.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">MIKADO</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Proficient</span>
+            <!-- INFO for MIKADO: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="Chess" aria-pressed="false">
+            <img src="archive/interests/Chess.png" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">Chess</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Intermediate</span>
+            <!-- INFO for Chess: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="POLYTOPIA" aria-pressed="false">
+            <img src="archive/interests/polytopia.jpg" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">POLYTOPIA</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Expert</span>
+            <!-- INFO for POLYTOPIA: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+              </p>
+            </template>
+          </button>
+          <button class="activity-card" type="button" data-rating="8" data-name="RISK!" aria-pressed="false">
+            <img src="archive/interests/risk.webp" alt="" loading="lazy" draggable="false" />
+            <span class="activity-name">RISK!</span><span class="activity-rating">Interest: 8/10 (board-game average)</span><span class="activity-skill">Skill: Intermediate</span>
+            <!-- INFO for RISK!: write your paragraph between the <p> tags below. -->
+            <template class="activity-info">
+              <p>
+              </p>
+            </template>
+          </button>
+        </div>
+        <p class="interests-photo-note">I'm not much of a photographer, so some images are taken from the web.</p>
+      </section>
+    </main>
   </body>
 </html>
