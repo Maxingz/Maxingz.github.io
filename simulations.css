@@ -1,0 +1,63 @@
+.projects-page.simulations-page { width: min(100% - 3rem, 70rem); margin-inline: auto; }
+.simulations-page .project-toggle { grid-template-columns: 1rem minmax(0, 1fr); }
+.city-gallery { margin-block: 2.5rem; }
+.simulations-page #gurtville-title { color: var(--text); font-size: 1rem; font-weight: 600; letter-spacing: normal; }
+#gurtville-overview { display: block; width: 100%; aspect-ratio: 16 / 9; background: #28221e; border-radius: 0.6rem; }
+.gurtville-video-slot { width: 100%; aspect-ratio: 16 / 9; }
+.gurtville-stage { position: relative; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; border-radius: 0.6rem; background: #28221e; }
+.gurtville-stage.is-scroll-expanded { position: fixed; z-index: 1000; max-width: none; pointer-events: none; }
+.gurtville-stage video[controls] { pointer-events: auto; }
+.gurtville-map-hint { position: absolute; top: 0.75rem; left: 0.75rem; z-index: 2; width: min(12rem, calc(100% - 1.5rem)); padding: 0.5rem 0.65rem; border: 1px solid rgb(132 181 206 / 25%); border-radius: 0.4rem; background: rgb(190 222 237 / 38%); backdrop-filter: blur(2px); color: #254454; font-size: 0.6rem; line-height: 1.4; opacity: 0; visibility: hidden; transition: opacity 250ms ease, visibility 250ms; pointer-events: none; }
+.gurtville-map-hint strong { display: block; margin-bottom: 0.2rem; font-size: 0.68rem; }
+.gurtville-map-hint p { margin: 0; }
+.show-districts .gurtville-map-hint { opacity: 1; visibility: visible; }
+.is-visiting-district .gurtville-districts, .is-visiting-district .gurtville-map-hint { opacity: 0; pointer-events: none; }
+[data-hover-district="0"], [data-hover-district="1"], [data-hover-district="2"], [data-hover-district="3"], [data-hover-district="4"], [data-hover-district="5"], [data-hover-district="7"], [data-hover-district="8"], [data-hover-district="9"], [data-hover-district="10"], [data-hover-district="11"] { cursor: pointer; }
+.district-viewer { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; outline: none; box-shadow: none; background: transparent; overflow: hidden; }
+.district-viewer::backdrop { background: transparent; }
+.district-viewer video { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; background: transparent; border: 0; outline: none; }
+.district-marker:focus { outline: none; }
+.district-marker:focus-visible .district-pin { stroke: white; stroke-width: 3; }
+.district-viewer.is-ready video { opacity: 1; }
+.district-viewer-back { position: absolute; top: 1rem; left: 1rem; padding: 0.6rem 0.9rem; border: 1px solid rgb(190 222 237 / 50%); border-radius: 0.4rem; background: rgb(25 47 59 / 80%); color: white; font: inherit; font-size: 0.75rem; cursor: pointer; }
+.district-viewer-back:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+.district-viewer-status { position: absolute; top: 4rem; left: 1rem; color: white; text-shadow: 0 1px 4px black; font-size: 0.8rem; }
+@media (prefers-reduced-motion: reduce) { .district-viewer video { transition: none; } }
+.gurtville-scene { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 100%; height: 100%; }
+.gurtville-scene #gurtville-overview { width: 100%; height: 100%; object-fit: contain; border-radius: 0; }
+.gurtville-districts { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 550ms ease; pointer-events: none; }
+.show-districts .gurtville-districts { opacity: 1; }
+.show-districts.is-visiting-district .gurtville-districts, .show-districts.is-visiting-district .gurtville-map-hint { opacity: 0; }
+.district-hover-target { fill: transparent; pointer-events: none; }
+.show-districts .district-hover-target { pointer-events: fill; }
+.district-area { fill: var(--district-color); fill-opacity: 0.26; stroke: var(--district-color); stroke-opacity: 0.85; stroke-width: 2; stroke-linejoin: miter; }
+.district-slice-shadow { fill: #111916; }
+.district-slice-face { stroke: var(--district-color); stroke-opacity: 0.5; stroke-width: 1; stroke-linejoin: miter; }
+.district-pin { fill: var(--district-color); stroke: #fffaf5; stroke-width: 1.8; filter: drop-shadow(0 2px 3px rgb(0 0 0 / 50%)); }
+.district-pin-center { fill: #fffaf5; }
+.show-districts .district-marker { pointer-events: auto; }
+.district-areas > g, .district-marker { transition: opacity 180ms ease; }
+.district-muted { opacity: 0; }
+.show-districts .district-marker.district-muted { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .district-areas > g, .district-marker { transition: none; } }
+.district-hit-area { fill: transparent; }
+.district-name { fill: #fffaf5; font: 600 16px "Segoe UI", sans-serif; transition: transform 220ms ease; }
+.district-name, .district-description { paint-order: stroke fill; stroke: rgb(20 18 16 / 85%); stroke-width: 3px; stroke-linejoin: round; }
+.district-description { fill: #fffaf5; font: 13px "Segoe UI", sans-serif; opacity: 0; transform: translateY(5px); transition: opacity 180ms ease, transform 220ms ease; pointer-events: none; }
+.district-marker:hover .district-name, .district-marker.is-hovered .district-name { transform: translateY(-24px); }
+.district-marker:hover .district-description, .district-marker.is-hovered .district-description { opacity: 1; transform: translateY(0); transition-delay: 70ms; }
+@media (prefers-reduced-motion: reduce) { .gurtville-districts, .district-name, .district-description { transition: none; } }
+.simulation-education > summary { padding: 1rem 0; color: var(--text); font-size: 1rem; font-weight: 600; cursor: pointer; }
+.simulation-education > summary::marker { color: var(--accent); }
+.simulation-description { display: block; max-width: 48rem; margin-top: 0.6rem; color: var(--muted); font-size: 0.85rem; font-weight: 400; line-height: 1.7; }
+.simulation-education > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.city-gallery video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #28221e; border-radius: 0.6rem; }
+#city-clip-label { margin: 0.6rem 0 1rem; color: var(--muted); font-size: 0.8rem; }
+.city-clips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.city-clip { padding: 0.5rem 0.8rem; border: 1px solid #ec873a; border-radius: 0.4rem; background: #ffead4; color: #783f17; font: inherit; font-size: 0.75rem; cursor: pointer; }
+.city-clip:hover { background: #ffd6ac; }
+.city-clip[aria-pressed="true"] { background: #783f17; color: #fffaf5; }
+.city-clip:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 48rem) {
+  .simulations-page .project-body { padding-inline: 0; }
+}
