@@ -1,0 +1,13 @@
+{
+  "name": "mg-visitor-dashboard",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "observability": { "enabled": false },
+  "vars": { "SITE_ORIGIN": "https://maxingz.github.io" },
+  "d1_databases": [{ "binding": "DB", "database_name": "mg-visitors", "database_id": "47018c75-d000-4fd8-b4fc-913aa5bae723", "migrations_dir": "migrations" }],
+  "ratelimits": [
+    { "name": "LOGIN_LIMIT", "namespace_id": "8101", "simple": { "limit": 5, "period": 60 } },
+    { "name": "TRACK_LIMIT", "namespace_id": "8102", "simple": { "limit": 30, "period": 60 } }
+  ]
+}

@@ -12,7 +12,7 @@
 .gurtville-map-hint p { margin: 0; }
 .show-districts .gurtville-map-hint { opacity: 1; visibility: visible; }
 .is-visiting-district .gurtville-districts, .is-visiting-district .gurtville-map-hint { opacity: 0; pointer-events: none; }
-[data-hover-district="0"], [data-hover-district="1"], [data-hover-district="2"], [data-hover-district="3"], [data-hover-district="4"], [data-hover-district="5"], [data-hover-district="7"], [data-hover-district="8"], [data-hover-district="9"], [data-hover-district="10"], [data-hover-district="11"] { cursor: pointer; }
+[data-hover-district="0"], [data-hover-district="1"], [data-hover-district="2"], [data-hover-district="3"], [data-hover-district="4"], [data-hover-district="5"], [data-hover-district="6"], [data-hover-district="7"], [data-hover-district="8"], [data-hover-district="9"], [data-hover-district="10"], [data-hover-district="11"] { cursor: pointer; }
 .district-viewer { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; outline: none; box-shadow: none; background: transparent; overflow: hidden; }
 .district-viewer::backdrop { background: transparent; }
 .district-viewer video { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; background: transparent; border: 0; outline: none; }
@@ -41,7 +41,7 @@
 .show-districts .district-marker.district-muted { pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .district-areas > g, .district-marker { transition: none; } }
 .district-hit-area { fill: transparent; }
-.district-name { fill: #fffaf5; font: 600 16px "Segoe UI", sans-serif; transition: transform 220ms ease; }
+.district-name { fill: #fffaf5; font: 600 21px "Segoe UI", sans-serif; transition: transform 220ms ease; }
 .district-name, .district-description { paint-order: stroke fill; stroke: rgb(20 18 16 / 85%); stroke-width: 3px; stroke-linejoin: round; }
 .district-description { fill: #fffaf5; font: 13px "Segoe UI", sans-serif; opacity: 0; transform: translateY(5px); transition: opacity 180ms ease, transform 220ms ease; pointer-events: none; }
 .district-marker:hover .district-name, .district-marker.is-hovered .district-name { transform: translateY(-24px); }
@@ -61,3 +61,13 @@
 @media (max-width: 48rem) {
   .simulations-page .project-body { padding-inline: 0; }
 }
+
+/* District 01 uses the same overlay renderer over the centred, cover-sized clip. */
+.district-detail-scene { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.district-detail-scene [data-hover-district] { cursor: default; }
+.district-viewer-back, .district-viewer-status { z-index: 3; }
+.district-detail-hint { top: 4.5rem; }
+.show-detail-map .district-detail-hint { opacity: 1; visibility: visible; }
+
+.district-viewer-title { position: absolute; z-index: 3; top: 1rem; left: 50%; transform: translateX(-50%); margin: 0; max-width: calc(100% - 22rem); color: #fffaf5; font: 600 1.6rem/1.4 "Segoe UI", sans-serif; text-align: center; text-shadow: 0 2px 5px rgb(0 0 0 / 85%); pointer-events: none; }
+@media (max-width: 48rem) { .district-viewer-title { top: 4.5rem; max-width: calc(100% - 2rem); } }

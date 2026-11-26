@@ -26,25 +26,27 @@
     // Names, descriptions, colours, and pointer positions are editable independently.
     const districts = [
       { name: 'District 01', description: 'A neighbourhood across the bay.', color: '#75cf9a', point: [600,300], label: [180,65], path: 'M185 325 L682 231 L983 292 L532 347 Z' },
-      { name: 'District 02', description: 'A small district with its own character.', color: '#f8ca6c', point: [1060,335], label: [760,65], path: 'M869 368 L1038 320 L1293 320 L1049 379 Z' },
-      { name: 'District 03', description: 'Room for the city to grow.', color: '#aeb4ff', point: [1070,463], label: [1050,65], path: 'M944 432 L1368 473 L1426 480 L1407 507 L858 474 Z' },
-      { name: 'District 04', description: 'A quiet corner beyond the skyline.', color: '#f3a0ca', point: [1647,295], label: [1630,65], path: 'M1569 264 L1689 273 L1723 308 L1485 308 Z' },
-      { name: 'District 05', description: 'A skyline along the northern shore.', color: '#65cfe3', point: [1485,340], label: [1830,440], path: 'M1341 308 L1485 308 L1723 308 L1896 304 L1819 374 L1253 355 Z' },
-      { name: 'District 06', description: 'Streets and services connecting the city.', color: '#f1a36c', point: [1255,434], label: [470,65], path: 'M1034 388 L1387 409.790123 L1368 473 L944 432 Z' },
-      { name: 'District 07', description: 'A compact district beside the main route.', color: '#d9c77c', point: [1413,445], label: [1340,65], path: 'M1387 409.790123 L1478 415.407407 L1426 480 L1368 473 Z' },
-      { name: 'District 08', description: 'The busy heart of Gurtville.', color: '#e9a1a0', point: [975,595], label: [490,970], path: 'M670 463 L858 474 L1407 507 L1258 713 L1012 680 L566 585 Z' },
+      { name: "Abbotsford", description: "Small farming district.", color: '#f8ca6c', point: [1060,335], label: [760,65], path: 'M869 368 L1038 320 L1293 320 L1049 379 Z' },
+      { name: "Coquitlam", description: "High land value suburban residential.", color: '#aeb4ff', point: [1140,463], label: [1050,65], path: 'M944 432 L1368 473 L1426 480 L1407 507 L858 474 Z' },
+      { name: "Delta", description: "Industrial region to kickstart goods production.", color: '#f3a0ca', point: [1647,295], label: [1630,65], path: 'M1569 264 L1689 273 L1723 308 L1485 308 Z' },
+      { name: "Metrotown", description: "High density city centre.", color: '#65cfe3', point: [1485,340], label: [1830,440], path: 'M1341 308 L1485 308 L1723 308 L1896 304 L1819 374 L1253 355 Z' },
+      { name: "Surrey", description: "Affordable housing stationed conveniently next to industrial and commercial zones.", color: '#f1a36c', point: [1255,434], label: [470,65], path: 'M1034 388 L1478 415.407407 L1426 480 L1368 473 L944 432 Z' },
+      { name: "Burnaby", description: "High density tech hub with a great transportation network.", color: '#e9a1a0', point: [975,595], label: [490,970], path: 'M670 463 L858 474 L1407 507 L1258 713 L1012 680 L566 585 Z' },
       { name: 'District 09', description: 'A neighbourhood beside the waterfront.', color: '#9ccf72', point: [1565,495], label: [1740,560], path: 'M1478 415.407407 L1798 435.160494 L1417 618 L1258 713 L1407 507 L1426 480 Z' },
-      { name: 'District 10', description: 'City life along the eastern coast.', color: '#b9a1f3', point: [1750,560], label: [1815,690], path: 'M1798 435.160494 L1925 443 L1822 658 L1417 618 Z' },
-      { name: 'District 11', description: 'Industry and trade on the harbour.', color: '#6bc8bd', point: [610,785], label: [200,900], path: 'M566 585 L1012 680 L681 968 L183 832 Z' },
+      { name: "White Rock", description: "Oceanfront tourist trap.", color: '#b9a1f3', point: [1750,560], label: [1815,690], path: 'M1798 435.160494 L1925 443 L1822 658 L1417 618 Z' },
+      { name: "North Burnaby", description: "Gurtville's oil industry providing one-third of the city's consumed power.", color: '#6bc8bd', point: [610,785], label: [200,900], path: 'M566 585 L1012 680 L681 968 L183 832 Z' },
       { name: 'District 12', description: 'The city’s gateway to the wider world.', color: '#80b7ef', point: [1370,777], label: [1390,970], path: 'M1012 680 L1258 713 L1417 618 L1822 658 L1745 927 L681 968 Z' }
     ];
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    // Both map levels share the same polygon, pin, hover and extrusion behaviour.
+    function createDistrictMap(districts, scene, stage, viewBox = '0 0 2048 1050', horizon = 180) {
     const ns = 'http://www.w3.org/2000/svg';
     const svg = (tag, attrs) => {
       const element = document.createElementNS(ns, tag);
       for (const [key, value] of Object.entries(attrs)) element.setAttribute(key, value);
       return element;
     };
-    const overlay = svg('svg', { viewBox: '0 0 2048 1050', preserveAspectRatio: 'none', class: 'gurtville-districts', role: 'img', 'aria-label': 'Gurtville districts with placeholder names and descriptions' });
+    const overlay = svg('svg', { viewBox, preserveAspectRatio: 'none', class: 'gurtville-districts', role: 'img', 'aria-label': 'Gurtville districts with placeholder names and descriptions' });
     const areas = svg('g', { class: 'district-areas' });
     const labels = svg('g', { class: 'district-labels' });
     const hits = svg('g', { class: 'district-hover-targets' });
@@ -91,7 +93,7 @@
     });
     overlay.append(areas, hits, labels);
     scene.append(overlay);
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
     let hoveredDistrict = -1;
     let liftFrame = null;
     let lastLiftTime = 0;
@@ -107,7 +109,7 @@
         if (Math.abs(target - tile.lift) < 0.002) tile.lift = target;
         // Equal world-space height projects smaller near the distant horizon.
         // Apply the same projection to the top and walls, including depth within a district.
-        const horizonY = 180;
+        const horizonY = horizon;
         const liftScale = reducedMotion.matches ? 0 : tile.lift * 34 / (800 - horizonY);
         const raisedY = y => y - (y - horizonY) * liftScale;
         tile.top.setAttribute('transform', `matrix(1 0 0 ${1 - liftScale} 0 ${horizonY * liftScale})`);
@@ -161,6 +163,14 @@
     document.addEventListener('pointercancel', clearDistrictHover);
     window.addEventListener('blur', clearDistrictHover);
     document.addEventListener('visibilitychange', () => { if (document.hidden) clearDistrictHover(); });
+
+      return { overlay, tiles, hover: setHoveredDistrict, clear: clearDistrictHover, refresh() {
+        if (lastPointer) syncDistrictHover(document.elementFromPoint(lastPointer.x, lastPointer.y));
+      } };
+    }
+    const mainMap = createDistrictMap(districts, scene, stage);
+    const { overlay, tiles } = mainMap;
+    const clearDistrictHover = () => mainMap.clear();
     const districtViewer = document.createElement('dialog');
     districtViewer.className = 'district-viewer';
     districtViewer.setAttribute('aria-label', 'District 01 video');
@@ -177,11 +187,11 @@
       5: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.24.55.10%20-%20Web.mp4' },
       2: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.24.03.09%20-%20Web.mp4' },
       0: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.30.09.16%20-%20Web.mp4', loopEnd: 7 },
-      7: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.23.02.08%20-%20Web.mp4' },
+      6: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.23.02.08%20-%20Web.mp4' },
+      7: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.20.28.05%20-%20Web.mp4' },
       8: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.19.54.04%20-%20Web.mp4' },
-      9: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.19.54.04%20-%20Web.mp4' },
-      10: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.22.03.07%20-%20Web.mp4' },
-      11: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.19.12.03%20-%20Web.mp4' }
+      9: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.22.03.07%20-%20Web.mp4' },
+      10: { src: 'assets/simulations/cities-skylines/Cities%20Skylines%202026.11.15%20-%2016.19.12.03%20-%20Web.mp4' }
     };
     let selectedDistrict = null;
     function prepareDistrictClip(index) {
@@ -215,8 +225,65 @@
     const viewerStatus = document.createElement('p');
     viewerStatus.className = 'district-viewer-status';
     viewerStatus.setAttribute('role', 'status');
-    districtViewer.append(districtVideo, backButton, viewerStatus);
+    const viewerTitle = document.createElement('h2');
+    viewerTitle.className = 'district-viewer-title';
+    districtViewer.append(districtVideo, backButton, viewerStatus, viewerTitle);
     document.body.append(districtViewer);
+
+
+    // Four straight-edged sections traced from the supplied District 01 reference.
+    // Reference viewport: 2468 × 1226, centred over the 16:9 video.
+    const districtOneSections = [
+      { name: 'Section 01', description: 'The neighbourhoods across the river.', color: '#75cf9a',
+        point: [1560, 280], path: 'M680 200 L1068 110 L2405 165 L2425 256 L1435 380 Z' },
+      { name: 'Section 02', description: 'High-rise living beside the bay.', color: '#f8ca6c',
+        point: [1320, 520], path: 'M1060 390 L1255 337 L1535 409 L1590 529 L1478 606 L1140 606 Z' },
+      { name: 'Section 03', description: 'The eastern streets and local industry.', color: '#b9a1f3',
+        point: [1960, 630], path: 'M1555 458 L2185 456 L2439 746 L1630 768 L1545 560 L1590 529 Z' },
+      { name: 'Section 04', description: 'Homes and winding roads along the coast.', color: '#65cfe3',
+        point: [875, 910], path: 'M103 1125 L410 799 L1010 597 L1140 606 L1478 606 L1545 560 L1630 768 L1470 1000 L237 1220 Z' }
+    ];
+    const detailScene = document.createElement('div');
+    detailScene.className = 'district-detail-scene';
+    // Convert the traced viewport coordinates into uncropped video coordinates.
+    const referenceWidth = 2468, referenceHeight = referenceWidth * 9 / 16;
+    const referenceOffset = (referenceHeight - 1226) / 2;
+    const detailSections = districtOneSections.map(section => ({
+      ...section,
+      point: [section.point[0], section.point[1] + referenceOffset],
+      path: section.path.replace(/(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/g,
+        (_, x, y) => x + ' ' + (Number(y) + referenceOffset))
+    }));
+    const detailMap = createDistrictMap(detailSections, detailScene, detailScene,
+      '0 0 ' + referenceWidth + ' ' + referenceHeight, 90 + referenceOffset);
+    detailMap.overlay.setAttribute('aria-label', 'District 01 neighbourhood sections');
+    detailMap.tiles.forEach((tile, index) => {
+      tile.marker.setAttribute('tabindex', '0');
+      tile.marker.setAttribute('aria-label', detailSections[index].name + ': ' + detailSections[index].description);
+      tile.marker.addEventListener('focus', () => detailMap.hover(index));
+      tile.marker.addEventListener('blur', detailMap.clear);
+    });
+    const detailHint = document.createElement('aside');
+    detailHint.className = 'gurtville-map-hint district-detail-hint';
+    detailHint.innerHTML = '<strong>Explore District 01</strong><p>Hover over a section to lift it and reveal its description.</p>';
+    districtViewer.append(detailScene, detailHint);
+    function syncDetailMap() {
+      const visible = districtViewer.open && selectedDistrict === 0 &&
+        districtViewer.classList.contains('is-ready') && !closingViewer;
+      detailScene.classList.toggle('show-districts', visible);
+      districtViewer.classList.toggle('show-detail-map', visible);
+      detailScene.setAttribute('aria-hidden', String(!visible));
+      detailScene.inert = !visible;
+      if (!visible) detailMap.clear();
+      // Match object-fit: cover and its centred crop exactly at every viewport size.
+      const ratio = districtVideo.videoWidth / districtVideo.videoHeight || 16 / 9;
+      const width = Math.max(districtViewer.clientWidth, districtViewer.clientHeight * ratio);
+      detailScene.style.width = width + 'px';
+      detailScene.style.height = width / ratio + 'px';
+      detailMap.refresh();
+    }
+    window.addEventListener('resize', syncDetailMap);
+    districtVideo.addEventListener('loadedmetadata', syncDetailMap);
 
     let arrivalAnimation = null;
 
@@ -224,6 +291,7 @@
     function revealDistrictVideo() {
       if (!districtViewer.open || closingViewer || districtVideo.seeking || districtVideo.readyState < 2 || districtViewer.classList.contains('is-ready')) return;
       districtViewer.classList.add('is-ready');
+      syncDetailMap();
       arrivalAnimation = districtVideo.animate([
         { opacity: 0 },
         { opacity: 1 }
@@ -242,6 +310,7 @@
     function returnToMap() {
       if (closingViewer) return;
       closingViewer = true;
+      syncDetailMap();
       overview.play().catch(() => {});
       arrivalAnimation?.cancel();
       const fade = districtVideo.animate([{ opacity: 1 }, { opacity: 0 }], {
@@ -259,6 +328,7 @@
 
       districtVideo.pause();
       districtViewer.classList.remove('is-ready');
+      syncDetailMap();
 
       arrivalAnimation?.cancel();
 
@@ -271,12 +341,14 @@
     function visitDistrict(index) {
       if (!districtClips[index] || districtViewer.open || !stage.classList.contains('show-districts')) return;
       selectedDistrict = index;
+      viewerTitle.textContent = districts[index].name;
       districtViewer.setAttribute('aria-label', `${districts[index].name} video`);
       clearDistrictHover();
       previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       stage.classList.add('is-visiting-district');
       districtViewer.showModal();
+      syncDetailMap();
       backButton.focus();
       viewerStatus.textContent = `Loading ${districts[index].name}…`;
       prepareDistrictClip(index);
@@ -339,10 +411,10 @@
       scene.style.width = `${sceneWidth}px`;
       scene.style.height = `${sceneWidth / ratio}px`;
       stage.classList.toggle('show-districts', amount > 0.85);
-      if (amount <= 0.85 && hoveredDistrict !== -1) setHoveredDistrict(-1);
+      if (amount <= 0.85) mainMap.clear();
       overlay.setAttribute('aria-hidden', String(amount <= 0.85));
       // Scrolling/resizing can move the map away from a stationary cursor.
-      if (lastPointer) syncDistrictHover(document.elementFromPoint(lastPointer.x, lastPointer.y));
+      mainMap.refresh();
     };
     const scheduleSize = () => {
       if (scrollFrame === null) scrollFrame = requestAnimationFrame(updateSize);

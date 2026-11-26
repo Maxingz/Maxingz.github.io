@@ -1,0 +1,7 @@
+.header-inner:has(.mg-dashboard-link) { position: relative; padding-right: 3.5rem; }
+.mg-dashboard-link { position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border: 1.5px solid #e98137; border-radius: 50%; background: #fff1e4; color: #b94d0a; font: 800 0.8rem/1 system-ui, sans-serif; text-decoration: none; }
+.mg-dashboard-link:hover { background: #ffdfbe; }
+.mg-dashboard-link:focus-visible { outline: 2px solid #b94d0a; outline-offset: 3px; }
+.mg-setup-notice { max-width: min(90vw, 24rem); padding: 1.5rem; border: 1px solid #e98137; border-radius: 0.6rem; background: #fffaf5; color: #302720; }
+.mg-setup-notice::backdrop { background: rgb(0 0 0 / 35%); }
+.mg-setup-notice button { padding: 0.5rem 1rem; border: 1px solid #e98137; border-radius: 0.3rem; background: #ffead4; color: #713b16; cursor: pointer; }
