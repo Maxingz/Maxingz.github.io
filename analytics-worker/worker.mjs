@@ -1,4 +1,5 @@
 import { loginPage, dashboardPage } from './pages.mjs';
+import { pacificDay } from './time.mjs';
 
 const encoder = new TextEncoder();
 const cookieName = '__Host-mg_session';
@@ -57,8 +58,9 @@ export default {
         const now = new Date().toISOString();
         const day = now.slice(0, 10);
         await env.DB.batch([
-          env.DB.prepare('INSERT INTO visitors (id, first_day, visit_count, last_seen) VALUES (?, ?, 1, ?) ON CONFLICT(id) DO UPDATE SET visit_count = visitors.visit_count + 1, last_seen = excluded.last_seen').bind(id, day, now),
-          env.DB.prepare('INSERT OR IGNORE INTO daily_visitors (day, visitor_id) VALUES (?, ?)').bind(day, id)
+          env.DB.prepare('INSERT INTO visitors (id, first_day, visit_count, last_seen, ip_address, first_seen) VALUES (?, ?, 1, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET visit_count = visitors.visit_count + 1, last_seen = excluded.last_seen, ip_address = excluded.ip_address').bind(id, day, now, ip, now),
+          env.DB.prepare('INSERT OR IGNORE INTO daily_visitors (day, visitor_id) VALUES (?, ?)').bind(day, id),
+          env.DB.prepare('INSERT OR IGNORE INTO daily_visitors_pt (day, visitor_id) VALUES (?, ?)').bind(pacificDay(now), id)
         ]);
         return response(null, 204, cors);
       }
@@ -94,13 +96,13 @@ export default {
       if (request.method !== 'GET' || url.pathname !== '/') return response('Not found', 404);
       if (!await authenticated(request, env)) return response(loginPage());
       const total = await env.DB.prepare('SELECT COUNT(*) AS count FROM visitors').first();
-      const today = await env.DB.prepare('SELECT COUNT(*) AS count FROM daily_visitors WHERE day = ?').bind(new Date().toISOString().slice(0, 10)).first();
-      const daily = await env.DB.prepare('SELECT day, COUNT(*) AS count FROM daily_visitors GROUP BY day ORDER BY day DESC LIMIT 30').all();
+      const today = await env.DB.prepare('SELECT COUNT(*) AS count FROM daily_visitors_pt WHERE day = ?').bind(pacificDay()).first();
+      const daily = await env.DB.prepare('SELECT day, COUNT(*) AS count FROM daily_visitors_pt GROUP BY day ORDER BY day DESC LIMIT 30').all();
       const pageSize = 50;
       const pageCount = Math.max(1, Math.ceil(total.count / pageSize));
       const requestedPage = Number(url.searchParams.get('page'));
       const page = Number.isSafeInteger(requestedPage) ? Math.min(pageCount, Math.max(1, requestedPage)) : 1;
-      const visitors = await env.DB.prepare('SELECT id, first_day, visit_count, last_seen FROM visitors ORDER BY first_day DESC, id ASC LIMIT ? OFFSET ?').bind(pageSize, (page - 1) * pageSize).all();
+      const visitors = await env.DB.prepare('SELECT id, first_day, first_seen, ip_address, visit_count, last_seen FROM visitors ORDER BY first_day DESC, id ASC LIMIT ? OFFSET ?').bind(pageSize, (page - 1) * pageSize).all();
       return response(dashboardPage(total.count, today.count, daily.results, visitors.results, page, pageCount));
     } catch {
       return response('Service temporarily unavailable. Please try again later.', 503);
