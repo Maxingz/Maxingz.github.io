@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import worker from './worker.mjs';
 import { DatabaseSync } from 'node:sqlite';
 import { readFileSync } from 'node:fs';
+import { pacificDay, pacificTime } from './time.mjs';
 
 const base = 'https://mg.example.workers.dev';
 function environment() {
@@ -66,7 +67,7 @@ test('correct password creates a secure session; tampering and expired sessions 
   const logout = await worker.fetch(new Request(base + '/logout', { method: 'POST', headers: { Origin: base } }), env);
   assert.match(logout.headers.get('Set-Cookie'), /Max-Age=0/);
 });
-test('counts deduplicate IPs without storing the address; rejects other origins and respects GPC', async () => {
+test('counts deduplicate IPs; rejects other origins and respects GPC', async () => {
   const { env, visitors } = environment();
   const track = (ip, extra = {}) => new Request(base + '/track', { method: 'POST', headers: { Origin: env.SITE_ORIGIN, 'CF-Connecting-IP': ip, ...extra } });
   assert.equal((await worker.fetch(track('192.0.2.1'), env)).status, 204);
@@ -92,6 +93,7 @@ test('visit migration preserves history, counts page loads and paginates private
     db.exec(readFileSync(new URL('./migrations/0001_visitors.sql', import.meta.url), 'utf8'));
     db.prepare('INSERT INTO visitors VALUES (?, ?)').run('historical-id', '2026-01-01');
     db.exec(readFileSync(new URL('./migrations/0002_visit_counts.sql', import.meta.url), 'utf8'));
+    db.exec(readFileSync(new URL('./migrations/0003_ip_and_pacific.sql', import.meta.url), 'utf8'));
     assert.equal(db.prepare('SELECT visit_count FROM visitors').get().visit_count, 0);
     const { env } = environment();
     env.DB = {
@@ -105,22 +107,36 @@ test('visit migration preserves history, counts page loads and paginates private
     };
     const track = () => new Request(base + '/track', { method: 'POST', headers: { Origin: env.SITE_ORIGIN, 'CF-Connecting-IP': '192.0.2.9' } });
     assert.equal((await worker.fetch(track(), env)).status, 204);
+    db.prepare('UPDATE visitors SET ip_address = NULL, first_seen = NULL WHERE id != ?').run('historical-id');
     assert.equal((await worker.fetch(track(), env)).status, 204);
     const visitor = db.prepare('SELECT * FROM visitors WHERE id != ?').get('historical-id');
     assert.equal(visitor.visit_count, 2);
     assert.match(visitor.id, /^[a-f0-9]{64}$/);
     assert.ok(visitor.last_seen);
+    assert.equal(visitor.ip_address, '192.0.2.9');
+    assert.equal(visitor.first_seen, null); // Never invent an earlier timestamp for a legacy visitor.
+    assert.equal(db.prepare('SELECT day FROM daily_visitors_pt').get().day, pacificDay(visitor.last_seen));
     assert.equal(db.prepare('SELECT COUNT(*) AS count FROM visitors').get().count, 2);
     assert.equal(db.prepare('SELECT COUNT(*) AS count FROM daily_visitors').get().count, 1);
     const session = (await worker.fetch(login(env.ADMIN_PASSWORD), env)).headers.get('Set-Cookie').split(';')[0];
     const html = await (await worker.fetch(new Request(base, { headers: { Cookie: session } }), env)).text();
     assert.ok(html.includes(visitor.id));
+    assert.ok(html.includes('192.0.2.9'));
+    assert.ok(html.includes(pacificTime(visitor.last_seen)));
     assert.match(html, /<td>2<\/td>/);
     const publicHtml = await (await worker.fetch(new Request(base), env)).text();
     assert.ok(!publicHtml.includes(visitor.id));
+    assert.ok(!publicHtml.includes('192.0.2.9'));
     for (let i = 0; i < 55; i++) db.prepare('INSERT INTO visitors (id, first_day) VALUES (?, ?)').run(`extra-${i}`, '2026-02-01');
     const secondPage = await (await worker.fetch(new Request(base + '/?page=2', { headers: { Cookie: session } }), env)).text();
     assert.match(secondPage, /Page 2 of 2/);
     assert.ok(secondPage.includes('historical-id'));
   } finally { db.close(); }
+});
+test('Pacific dates handle midnight and daylight saving boundaries', () => {
+  assert.equal(pacificDay('2026-01-02T07:59:59Z'), '2026-01-01');
+  assert.equal(pacificDay('2026-01-02T08:00:00Z'), '2026-01-02');
+  assert.equal(pacificDay('2026-07-02T06:59:59Z'), '2026-07-01');
+  assert.match(pacificTime('2026-03-08T09:59:59Z'), /1:59:59 AM PST/);
+  assert.match(pacificTime('2026-03-08T10:00:00Z'), /3:00:00 AM PDT/);
 });
