@@ -17,7 +17,8 @@ async function verify(secret, text, signature) {
 function response(body, status = 200, extra = {}) {
   return new Response(body, { status, headers: {
     'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
-    'Referrer-Policy': 'no-referrer', 'X-Frame-Options': 'DENY',
+    // Preserve Origin on same-origin form POSTs so the CSRF check can validate them.
+    'Referrer-Policy': 'same-origin', 'X-Frame-Options': 'DENY',
     'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
     'Content-Type': 'text/html; charset=utf-8', ...extra
   } });
@@ -37,7 +38,7 @@ export default {
   async fetch(request, env) {
     try {
       if (!env.DB || !env.LOGIN_LIMIT || !env.TRACK_LIMIT ||
-          env.ADMIN_PASSWORD?.length < 24 || !env.ADMIN_PASSWORD ||
+          env.ADMIN_PASSWORD?.length < 10 || !env.ADMIN_PASSWORD ||
           !env.IP_HASH_SECRET || !env.SESSION_SECRET || env.SESSION_SECRET.length < 32) {
         return response('Dashboard setup is not complete.', 503);
       }
@@ -53,9 +54,10 @@ export default {
         if (!ip) return response('Missing visitor address', 400);
         const id = await sign(env.IP_HASH_SECRET, ip);
         if (!(await env.TRACK_LIMIT.limit({ key: id })).success) return response('Try later', 429, cors);
-        const day = new Date().toISOString().slice(0, 10);
+        const now = new Date().toISOString();
+        const day = now.slice(0, 10);
         await env.DB.batch([
-          env.DB.prepare('INSERT OR IGNORE INTO visitors (id, first_day) VALUES (?, ?)').bind(id, day),
+          env.DB.prepare('INSERT INTO visitors (id, first_day, visit_count, last_seen) VALUES (?, ?, 1, ?) ON CONFLICT(id) DO UPDATE SET visit_count = visitors.visit_count + 1, last_seen = excluded.last_seen').bind(id, day, now),
           env.DB.prepare('INSERT OR IGNORE INTO daily_visitors (day, visitor_id) VALUES (?, ?)').bind(day, id)
         ]);
         return response(null, 204, cors);
@@ -94,7 +96,12 @@ export default {
       const total = await env.DB.prepare('SELECT COUNT(*) AS count FROM visitors').first();
       const today = await env.DB.prepare('SELECT COUNT(*) AS count FROM daily_visitors WHERE day = ?').bind(new Date().toISOString().slice(0, 10)).first();
       const daily = await env.DB.prepare('SELECT day, COUNT(*) AS count FROM daily_visitors GROUP BY day ORDER BY day DESC LIMIT 30').all();
-      return response(dashboardPage(total.count, today.count, daily.results));
+      const pageSize = 50;
+      const pageCount = Math.max(1, Math.ceil(total.count / pageSize));
+      const requestedPage = Number(url.searchParams.get('page'));
+      const page = Number.isSafeInteger(requestedPage) ? Math.min(pageCount, Math.max(1, requestedPage)) : 1;
+      const visitors = await env.DB.prepare('SELECT id, first_day, visit_count, last_seen FROM visitors ORDER BY first_day DESC, id ASC LIMIT ? OFFSET ?').bind(pageSize, (page - 1) * pageSize).all();
+      return response(dashboardPage(total.count, today.count, daily.results, visitors.results, page, pageCount));
     } catch {
       return response('Service temporarily unavailable. Please try again later.', 503);
     }
